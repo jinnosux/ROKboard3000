@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ROKBoard 3000
 
-## Getting Started
+Amateur soundboard for **Radnici od Kuće** band's live performances with custom sound effects and audio clips.
 
-First, run the development server:
+*Built in <10 hours using Claude Code*
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![ROKBoard 3000 Preview](./public/rokboard3000.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Description
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Web-based soundboard with master volume control, responsive design, and high-quality audio playback. Features real-time waveform visualization, volume analysis, pitch-preserved speed control, and professional audio manipulation tools for live performances.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Features
 
-## Learn More
+### 🎛️ **Audio Control**
+- **Master Volume Control** - Global volume with VU meter visualization
+- **Individual Track Control** - Up to 4 simultaneous tracks in serial mode
+- **Region-based Playback** - Cut specific sections and loop them
+- **Speed Control** - 0.25x to 2.0x playback speed with 5 preset options
+- **Pitch Preservation** - Toggle to maintain or shift pitch when changing speed
 
-To learn more about Next.js, take a look at the following resources:
+### 🎵 **Live Performance Tools**
+- **Serial Mode** - Queue up to 4 tracks for seamless performance
+- **Autoplay** - Automatic track progression
+- **STOP ALL** - Emergency stop for all playing tracks
+- **Responsive Grid** - 4-10 column layouts for different screen sizes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🎨 **Visual Features**
+- **Real-time Waveform** - Interactive audio visualization
+- **VU Meter** - Master audio level monitoring
+- **Compact Interface** - Optimized for live performance use
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tech Stack
 
-## Deploy on Vercel
+- **Next.js 14** - React framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Web Audio API** - Audio playback
+- **WaveSurfer.js v7** - Advanced audio waveform visualization and manipulation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Configuration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Installation**:
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+2. **Add sounds**: Place audio files (MP3, WAV, OGG) in `public/sounds/`
+
+3. **Update library**: Edit `soundLibrary` array in `src/app/page.tsx`
+
+4. **Live setup**: Connect audio output to mixer line input
+
+## License
+
+MIT License - free to use and modify

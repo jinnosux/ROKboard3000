@@ -1,103 +1,178 @@
-import Image from "next/image";
+'use client';
+
+import React, { useEffect, useState, useCallback } from 'react';
+import SoundButton from '@/components/SoundButton';
+import ControlBox from '@/components/ControlBox';
+import MultiTrackPlayer from '@/components/MultiTrackPlayer';
+import { AudioAnalysisProvider, useAudioAnalysis } from '@/contexts/AudioAnalysisContext';
+import soundLibrary from '@/data/sounds.json';
+
+const HomeContent = () => {
+  const [columns, setColumns] = useState(4);
+  const [serialMode, setSerialMode] = useState(false);
+  const [autoplay, setAutoplay] = useState(false);
+  const [tracks, setTracks] = useState<{
+    id: string;
+    name: string;
+    artist: string;
+    url: string;
+  }[]>([]);
+  
+  const [masterVolume, setMasterVolume] = useState(0.7);
+
+  const { togglePlayPauseAll, isActive: isAnyPlaying } = useAudioAnalysis();
+
+
+  // Add spacebar event listener
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === 'Space') {
+        event.preventDefault();
+        togglePlayPauseAll();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [togglePlayPauseAll]);
+
+  const getGridCols = () => {
+    switch(columns) {
+      case 4: return 'grid-cols-4';
+      case 6: return 'grid-cols-6'; 
+      case 8: return 'grid-cols-8';
+      case 10: return 'grid-cols-10';
+      default: return 'grid-cols-4';
+    }
+  };
+
+  const getControlSize = () => {
+    return { width: '256px', height: '600px' }; // Desktop size - mobile will override with CSS
+  };
+
+  const handleTrackSelect = (soundConfig: typeof soundLibrary[0]) => {
+    const newTrack = {
+      id: soundConfig.id,
+      name: soundConfig.name,
+      artist: soundConfig.artist,
+      url: soundConfig.url
+    };
+    
+    if (serialMode) {
+      // In serial mode, add to tracks (up to 4 tracks)
+      setTracks(prev => {
+        // Don't add if track already exists or if we have 4 tracks
+        if (prev.some(track => track.id === soundConfig.id) || prev.length >= 4) {
+          return prev;
+        }
+        return [...prev, newTrack];
+      });
+    } else {
+      // In non-serial mode, replace with single track
+      setTracks([newTrack]);
+    }
+  };
+
+
+  const handleSerialModeChange = useCallback((newSerialMode: boolean) => {
+    setSerialMode(newSerialMode);
+    
+    // Clear all tracks when switching modes
+    setTracks([]);
+  }, []);
+
+  const handleRemoveTrack = useCallback((trackId: string) => {
+    setTracks(prev => prev.filter(track => track.id !== trackId));
+  }, []);
+
+  const handleStopAll = useCallback(() => {
+    // Use the existing togglePlayPauseAll to stop all wavesurfer instances
+    if (isAnyPlaying) {
+      togglePlayPauseAll();
+    }
+  }, [isAnyPlaying, togglePlayPauseAll]);
+
+  return (
+    <div className="min-h-screen bg-black text-white font-inter p-6 pb-24 md:pb-12">
+      <div className="w-full">
+        {/* Mobile: Stack vertically, Desktop: Side by side */}
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Control Box */}
+          <div 
+            className="w-full md:w-auto md:flex-shrink-0" 
+            style={{ 
+              width: 'auto',
+              height: 'auto'
+            }}
+          >
+            <div 
+              className="w-full md:w-[256px]"
+            >
+              <ControlBox
+                masterVolume={masterVolume}
+                onVolumeChange={setMasterVolume}
+                columns={columns}
+                onColumnsChange={setColumns}
+                onStopAll={handleStopAll}
+                isAnyPlaying={isAnyPlaying}
+                serialMode={serialMode}
+                onSerialModeChange={handleSerialModeChange}
+                autoplay={autoplay}
+                onAutoplayChange={setAutoplay}
+              />
+            </div>
+          </div>
+          
+          {/* Sound Buttons Grid */}
+          <div className={`grid ${getGridCols()} gap-4 flex-1 auto-rows-min`}>
+            {soundLibrary.map(soundConfig => {
+              const isInTracks = tracks.some(track => track.id === soundConfig.id);
+              
+              return (
+                <div key={soundConfig.id} className="aspect-square relative min-h-0">
+                  <SoundButton
+                    sound={{
+                      id: soundConfig.id,
+                      name: soundConfig.name,
+                      url: soundConfig.url,
+                      buffer: null,
+                      isLoading: false,
+                      isPlaying: false,
+                    }}
+                    onPlay={() => handleTrackSelect(soundConfig)}
+                    onStop={() => {}}
+                    disabled={serialMode && tracks.length >= 4 && !isInTracks}
+                    imageSrc={soundConfig.imageSrc}
+                    isCompact={columns >= 8}
+                    onTrackSelect={() => handleTrackSelect(soundConfig)}
+                  />
+                  {isInTracks && (
+                    <div className="absolute top-2 right-2 w-3 h-3 bg-emerald-500 rounded-full"></div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      
+      {/* Unified Player Footer */}
+      <MultiTrackPlayer
+        serialMode={serialMode}
+        tracks={tracks}
+        onRemoveTrack={handleRemoveTrack}
+        autoplay={autoplay}
+      />
+    </div>
+  );
+};
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <AudioAnalysisProvider>
+      <HomeContent />
+    </AudioAnalysisProvider>
   );
 }

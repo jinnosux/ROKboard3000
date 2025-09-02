@@ -1,0 +1,115 @@
+'use client';
+
+import React from 'react';
+import VUMeter from './VUMeter';
+import VolumeControl from './VolumeControl';
+import LayoutControl from './LayoutControl';
+
+interface ControlBoxProps {
+  masterVolume: number;
+  onVolumeChange: (volume: number) => void;
+  columns: number;
+  onColumnsChange: (columns: number) => void;
+  onStopAll: () => void;
+  isAnyPlaying: boolean;
+  serialMode: boolean;
+  onSerialModeChange: (enabled: boolean) => void;
+  autoplay: boolean;
+  onAutoplayChange: (enabled: boolean) => void;
+}
+
+const ControlBox: React.FC<ControlBoxProps> = ({
+  masterVolume,
+  onVolumeChange,
+  columns,
+  onColumnsChange,
+  onStopAll,
+  isAnyPlaying,
+  serialMode,
+  onSerialModeChange,
+  autoplay,
+  onAutoplayChange
+}) => {
+  return (
+    <div className="w-full bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 flex flex-col items-center relative">
+      
+      {/* Title */}
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-black text-white mb-1 tracking-wider font-mono">
+          ROKboard 3000
+        </h1>
+        <div className="text-sm text-gray-400 font-mono tracking-wider">
+          CONTROL
+        </div>
+      </div>
+
+      {/* Control containers with proper grouping */}
+      <div className="flex flex-col space-y-8">
+        
+        {/* Audio Control Container: VU meter, volume and STOP ALL */}
+        <div className="flex flex-col items-center space-y-4">
+          <div className="flex items-center space-x-4 h-48 md:h-40">
+            <VUMeter />
+            <VolumeControl 
+              volume={masterVolume} 
+              onVolumeChange={onVolumeChange} 
+            />
+          </div>
+          
+          <button
+            onClick={onStopAll}
+            disabled={!isAnyPlaying}
+            className={`border border-gray-600 rounded-sm shadow-inner transition-all duration-300 ${
+              isAnyPlaying
+                ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-red-500/25'
+                : 'bg-black text-gray-400 cursor-not-allowed'
+            }`}
+            style={{ width: '144px', height: '40px' }}
+          >
+            <span className="font-mono text-xs tracking-wider">
+              STOP ALL
+            </span>
+          </button>
+        </div>
+
+        {/* Mode Control Container: Serial, Autoplay and Layout */}
+        <div className="flex flex-col items-center space-y-3">
+          <button
+            onClick={() => onSerialModeChange(!serialMode)}
+            className={`border border-gray-600 rounded-sm shadow-inner transition-all duration-300 ${
+              serialMode
+                ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-500/25'
+                : 'bg-black text-gray-400 cursor-default'
+            }`}
+            style={{ width: '144px', height: '40px' }}
+          >
+            <span className="font-mono text-xs tracking-wider">
+              SERIAL {serialMode ? 'ON' : 'OFF'}
+            </span>
+          </button>
+
+          <button
+            onClick={() => onAutoplayChange(!autoplay)}
+            className={`border border-gray-600 rounded-sm shadow-inner transition-all duration-300 ${
+              autoplay
+                ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-500/25'
+                : 'bg-black text-gray-400 cursor-default'
+            }`}
+            style={{ width: '144px', height: '40px' }}
+          >
+            <span className="font-mono text-xs tracking-wider">
+              AUTOPLAY {autoplay ? 'ON' : 'OFF'}
+            </span>
+          </button>
+          
+          <LayoutControl
+            currentColumns={columns}
+            onColumnsChange={onColumnsChange}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ControlBox;
