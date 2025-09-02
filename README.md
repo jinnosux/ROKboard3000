@@ -1,8 +1,8 @@
 # ROKBoard 3000
 
-Amateur soundboard for **Radnici od Kuće** band's live performances with custom sound effects and audio clips.
+Soundboard for band's live performances with custom sound effects and advanced audio controls.
 
-*Built in <10 hours using Claude Code*
+*Built in < 10 hours using Claude Code*
 
 ![ROKBoard 3000 Preview](./public/rokboard3000.png)
 
