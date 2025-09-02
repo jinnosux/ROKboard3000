@@ -12,20 +12,20 @@ Web-based soundboard with master volume control, responsive design, and high-qua
 
 ## Features
 
-### 🎛️ **Audio Control**
+### **Audio Control**
 - **Master Volume Control** - Global volume with VU meter visualization
 - **Individual Track Control** - Up to 4 simultaneous tracks in serial mode
 - **Region-based Playback** - Cut specific sections and loop them
 - **Speed Control** - 0.25x to 2.0x playback speed with 5 preset options
 - **Pitch Preservation** - Toggle to maintain or shift pitch when changing speed
 
-### 🎵 **Live Performance Tools**
+### **Live Performance Tools**
 - **Serial Mode** - Queue up to 4 tracks for seamless performance
 - **Autoplay** - Automatic track progression
 - **STOP ALL** - Emergency stop for all playing tracks
 - **Responsive Grid** - 4-10 column layouts for different screen sizes
 
-### 🎨 **Visual Features**
+### **Visual Features**
 - **Real-time Waveform** - Interactive audio visualization
 - **VU Meter** - Master audio level monitoring
 - **Compact Interface** - Optimized for live performance use
@@ -48,9 +48,11 @@ Web-based soundboard with master volume control, responsive design, and high-qua
 
 2. **Add sounds**: Place audio files (MP3, WAV, OGG) in `public/sounds/`
 
-3. **Update library**: Edit `soundLibrary` array in `src/app/page.tsx`
+3. **Add images**: (optionally) Place image files (JPG, PNG) in `public/images/`
 
-4. **Live setup**: Connect audio output to mixer line input
+4. **Update library**: Edit `data/sounds.json` with data and sound/image paths
+
+5. **Live setup**: Connect audio output to mixer line input
 
 ## License
 
