@@ -222,6 +222,12 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
           <button
             onClick={() => {
               const newRegionsEnabled = !regionsEnabled;
+              
+              // Stop audio when enabling regions for proper selection
+              if (newRegionsEnabled && isPlaying) {
+                wavesurfer?.pause();
+              }
+              
               setRegionsEnabled(newRegionsEnabled);
               
               // If turning off regions while in loop mode, also disable loop mode
@@ -248,6 +254,12 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
           <button
             onClick={() => {
               const newLoopMode = !loopMode;
+              
+              // Stop audio when enabling loop mode for proper region selection
+              if (newLoopMode && isPlaying) {
+                wavesurfer?.pause();
+              }
+              
               setLoopMode(newLoopMode);
               
               if (newLoopMode) {
