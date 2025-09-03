@@ -4,11 +4,11 @@ import React from 'react';
 import { useAudioAnalysis } from '@/contexts/AudioAnalysisContext';
 
 interface VUMeterProps {
-  // Remove old props as we're now using the global audio analysis
+  className?: string;
 }
 
 const VUMeter: React.FC<VUMeterProps> = () => {
-  const { level, isActive } = useAudioAnalysis();
+  const { level } = useAudioAnalysis();
 
   const getVUBars = () => {
     const bars = [];

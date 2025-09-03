@@ -10,7 +10,6 @@ interface VolumeControlProps {
 const VolumeControl: React.FC<VolumeControlProps> = ({ volume, onVolumeChange }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const volumePercentage = Math.round(volume * 100);
 
   const handleSliderClick = useCallback((e: React.MouseEvent) => {
     if (!sliderRef.current) return;

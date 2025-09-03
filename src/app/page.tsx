@@ -48,9 +48,6 @@ const HomeContent = () => {
     }
   };
 
-  const getControlSize = () => {
-    return { width: '256px', height: '600px' }; // Desktop size - mobile will override with CSS
-  };
 
   const handleTrackSelect = (soundConfig: typeof soundLibrary[0]) => {
     const newTrack = {

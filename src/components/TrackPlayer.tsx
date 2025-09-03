@@ -54,7 +54,7 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
         unregisterWavesurfer(track.id);
       };
     }
-  }, [wavesurfer, isReady, track.id, registerWavesurfer, unregisterWavesurfer, markUserInteraction]);
+  }, [wavesurfer, isReady, isPlaying, track.id, registerWavesurfer, unregisterWavesurfer, markUserInteraction]);
 
   // Update playing state when it changes
   useEffect(() => {
@@ -68,7 +68,7 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
     if (wavesurfer && isReady) {
       const mediaElement = wavesurfer.getMediaElement();
       if (mediaElement) {
-        (mediaElement as any).preservesPitch = preservePitch;
+        (mediaElement as HTMLMediaElement & { preservesPitch?: boolean }).preservesPitch = preservePitch;
       }
     }
   }, [wavesurfer, isReady, preservePitch]);
@@ -113,7 +113,7 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
       // Set preservesPitch property on the media element
       const mediaElement = wavesurfer.getMediaElement();
       if (mediaElement) {
-        (mediaElement as any).preservesPitch = preservePitch;
+        (mediaElement as HTMLMediaElement & { preservesPitch?: boolean }).preservesPitch = preservePitch;
       }
       
       setPlaybackRate(rate);
@@ -122,7 +122,6 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
 
   const speedOptions = [0.25, 0.5, 1.0, 1.5, 2.0];
 
-  const buttonSize = isCompact ? 'w-12 h-12' : 'w-14 h-14';
   const controlButtonSize = isCompact ? 'w-12 h-6' : 'w-16 h-8';
   const textSize = isCompact ? 'text-sm' : 'text-sm';
 
