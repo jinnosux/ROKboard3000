@@ -2,15 +2,16 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { REGION_CONFIG } from '@/utils/wavesurferConfig';
+import type { WaveSurferType, RegionsPluginType, Region } from '@/types/audio';
 
 export const useWavesurferRegions = (
-  wavesurfer: any, 
+  wavesurfer: WaveSurferType | null, 
   isReady: boolean, 
   regionsEnabled: boolean,
   onRegionsCleared?: () => void
 ) => {
-  const [currentRegion, setCurrentRegion] = useState<any>(null);
-  const regionsPluginRef = useRef<any>(null);
+  const [currentRegion, setCurrentRegion] = useState<Region | null>(null);
+  const regionsPluginRef = useRef<RegionsPluginType | null>(null);
   const isCreatingRegionRef = useRef(false);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export const useWavesurferRegions = (
           
           regions.enableDragSelection(REGION_CONFIG);
 
-          regions.on('region-created', (region: any) => {
+          regions.on('region-created', (region: Region) => {
             // Prevent infinite loop
             if (isCreatingRegionRef.current) return;
             
@@ -31,7 +32,7 @@ export const useWavesurferRegions = (
             const existingRegions = regions.getRegions();
             if (existingRegions.length > 1) {
               isCreatingRegionRef.current = true;
-              existingRegions.forEach((existingRegion: any) => {
+              existingRegions.forEach((existingRegion: Region) => {
                 if (existingRegion.id !== region.id) {
                   existingRegion.remove();
                 }
@@ -42,12 +43,12 @@ export const useWavesurferRegions = (
             setCurrentRegion(region);
           });
 
-          regions.on('region-clicked', (region: any, e: any) => {
+          regions.on('region-clicked', (region: Region, e: MouseEvent) => {
             e.stopPropagation();
             setCurrentRegion(region);
           });
 
-        } catch (error) {
+        } catch {
           // Failed to load regions plugin - silently handle
         }
       };
@@ -62,7 +63,7 @@ export const useWavesurferRegions = (
         onRegionsCleared?.();
       }
     }
-  }, [wavesurfer, isReady, regionsEnabled]);
+  }, [wavesurfer, isReady, regionsEnabled, onRegionsCleared]);
 
   return { 
     currentRegion, 

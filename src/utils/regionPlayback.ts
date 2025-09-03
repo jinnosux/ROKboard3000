@@ -1,8 +1,8 @@
-import { WavesurferRegion } from '@/types/audio';
+import type { WaveSurferType, Region } from '@/types/audio';
 
 export const createRegionPlayback = (
-  wavesurfer: any, 
-  currentRegion: WavesurferRegion | null, 
+  wavesurfer: WaveSurferType | null, 
+  currentRegion: Region | null, 
   loopEnabled: boolean
 ): void => {
   if (!currentRegion || !wavesurfer) return;

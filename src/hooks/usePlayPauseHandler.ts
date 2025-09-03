@@ -1,12 +1,13 @@
 'use client';
 
 import { useCallback } from 'react';
+import type { WaveSurferType, Region } from '@/types/audio';
 
 export const usePlayPauseHandler = (
-  wavesurfer: any, 
+  wavesurfer: WaveSurferType | null, 
   isReady: boolean, 
   isPlaying: boolean, 
-  currentRegion: any, 
+  currentRegion: Region | null, 
   regionsEnabled: boolean,
   onPlayRegion: () => void
 ) => {

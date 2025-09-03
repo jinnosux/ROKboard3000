@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
+import type { WaveSurferType } from '@/types/audio';
 
 export const useWavesurferEvents = (
-  wavesurfer: any,
+  wavesurfer: WaveSurferType | null,
   isReady: boolean,
   regionsEnabled: boolean,
   onPlay?: () => void,
