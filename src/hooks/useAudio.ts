@@ -29,7 +29,7 @@ export const useAudio = (serialMode: boolean = false) => {
   useEffect(() => {
     const initAudioContext = async () => {
       if (typeof window !== 'undefined') {
-        const context = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const context = new (window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext!)();
         setAudioContext(context);
         
         // Create master gain node
@@ -47,13 +47,13 @@ export const useAudio = (serialMode: boolean = false) => {
         audioContext.close();
       }
     };
-  }, []);
+  }, [audioContext, masterVolume]);
 
   useEffect(() => {
     if (gainNodeRef.current) {
       gainNodeRef.current.gain.value = masterVolume;
     }
-  }, [masterVolume]);
+  }, [audioContext, masterVolume]);
 
   const loadSound = useCallback(async (id: string, name: string, url: string) => {
     if (!audioContext) return;
@@ -95,7 +95,7 @@ export const useAudio = (serialMode: boolean = false) => {
           duration: buffer.duration,
         }
       }));
-    } catch (error) {
+    } catch {
       // Failed to load sound - silently handle
       setSounds(prev => ({
         ...prev,
@@ -190,7 +190,7 @@ export const useAudio = (serialMode: boolean = false) => {
             progress: 0,
           }
         }));
-      } catch (error) {
+      } catch {
         // Error in onended handler - silently handle
       }
     };
@@ -208,7 +208,7 @@ export const useAudio = (serialMode: boolean = false) => {
     if (sound.buffer?.source && sound.isPlaying) {
       try {
         sound.buffer.source.stop();
-      } catch (error) {
+      } catch {
         // Error stopping sound - silently handle
       }
       

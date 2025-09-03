@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import type { WaveSurferType } from '@/types/audio';
 
-interface WavesurferInstance {
+interface WavesurferInstanceData {
   id: string;
-  wavesurfer: any;
+  wavesurfer: WaveSurferType;
   isPlaying: boolean;
   markUserInteraction?: () => void;
 }
@@ -12,33 +13,18 @@ interface WavesurferInstance {
 export const useGlobalAudioAnalysis = () => {
   const [level, setLevel] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  const wavesurferInstances = useRef<Map<string, WavesurferInstance>>(new Map());
-  const analyserRef = useRef<AnalyserNode | null>(null);
+  const wavesurferInstances = useRef<Map<string, WavesurferInstanceData>>(new Map());
   const animationFrameRef = useRef<number | null>(null);
 
-  const setupAnalyserForWavesurfer = useCallback((wavesurfer: any) => {
-    if (!wavesurfer) return;
-    
-    try {
-      // Mark that we have a "working" analyser for waveform data access
-      analyserRef.current = { type: 'wavesurfer-waveform' } as any;
-    } catch (error) {
-      console.warn('Could not setup VU meter:', error);
-    }
-  }, []);
 
-  const registerWavesurfer = useCallback((id: string, wavesurfer: any, isPlaying: boolean, markUserInteraction?: () => void) => {
+  const registerWavesurfer = useCallback((id: string, wavesurfer: WaveSurferType, isPlaying: boolean, markUserInteraction?: () => void) => {
     wavesurferInstances.current.set(id, { id, wavesurfer, isPlaying, markUserInteraction });
     
     // Update global active state
     const hasActive = Array.from(wavesurferInstances.current.values()).some(instance => instance.isPlaying);
     setIsActive(hasActive);
 
-    // Setup analyser if we have an active wavesurfer and don't have one yet
-    if (isPlaying && wavesurfer && !analyserRef.current) {
-      setupAnalyserForWavesurfer(wavesurfer);
-    }
-  }, [setupAnalyserForWavesurfer]);
+  }, []);
 
   const unregisterWavesurfer = useCallback((id: string) => {
     wavesurferInstances.current.delete(id);
@@ -66,15 +52,11 @@ export const useGlobalAudioAnalysis = () => {
       const hasActive = Array.from(wavesurferInstances.current.values()).some(inst => inst.isPlaying);
       setIsActive(hasActive);
       
-      // Try to setup analyser when something starts playing
-      if (isPlaying && !analyserRef.current) {
-        setupAnalyserForWavesurfer(instance.wavesurfer);
-      }
     }
-  }, [setupAnalyserForWavesurfer]);
+  }, []);
 
   useEffect(() => {
-    if (!isActive || !analyserRef.current) {
+    if (!isActive) {
       setLevel(0);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -114,49 +96,27 @@ export const useGlobalAudioAnalysis = () => {
         // Try to get real waveform data from wavesurfer
         let foundData = false;
         
-        // Check multiple possible sources for waveform/audio data
-        const possibleDataSources = [
-          activeWavesurfer.backend?.peaks,
-          activeWavesurfer.backend?.buffer,
-          activeWavesurfer.decodedData,
-          activeWavesurfer.peaks,
-          activeWavesurfer.renderer?.peaks,
-          activeWavesurfer.renderer?.decodedData,
-          activeWavesurfer.audioBuffer,
-          activeWavesurfer.buffer
-        ];
-        
-        for (const dataSource of possibleDataSources) {
-          if (dataSource && (Array.isArray(dataSource) || dataSource.getChannelData)) {
-            try {
-              let peaks = null;
+        // Get decoded audio data using WaveSurfer v7 API
+        try {
+          const audioBuffer = activeWavesurfer.getDecodedData();
+          if (audioBuffer) {
+            const channelData = audioBuffer.getChannelData(0); // Get first channel
+            const progress = currentTime / duration;
+            const sampleIndex = Math.floor(progress * channelData.length);
+            
+            if (sampleIndex >= 0 && sampleIndex < channelData.length) {
+              const rawValue = channelData[sampleIndex];
+              waveformLevel = Math.abs(rawValue);
               
-              if (Array.isArray(dataSource)) {
-                peaks = dataSource;
-              } else if (dataSource.getChannelData) {
-                peaks = dataSource.getChannelData(0); // Get first channel
-              }
+              // Apply scaling to make movement more visible
+              // Most audio samples are quite small (0.0 to 1.0), so amplify for better VU response
+              waveformLevel = Math.min(waveformLevel * 3, 1.0);
               
-              if (peaks) {
-                const progress = currentTime / duration;
-                const peakIndex = Math.floor(progress * peaks.length);
-                
-                if (peakIndex >= 0 && peakIndex < peaks.length && peaks[peakIndex] !== undefined) {
-                  const rawValue = peaks[peakIndex];
-                  waveformLevel = Math.abs(rawValue);
-                  
-                  // Apply scaling to make movement more visible
-                  // Most audio samples are quite small (0.0 to 1.0), so amplify for better VU response
-                  waveformLevel = Math.min(waveformLevel * 3, 1.0);
-                  
-                  foundData = true;
-                  break;
-                }
-              }
-            } catch (error) {
-              // Silently continue to next data source
+              foundData = true;
             }
           }
+        } catch {
+          // Silently handle any errors getting decoded data
         }
         
         // If no real data found, show silence

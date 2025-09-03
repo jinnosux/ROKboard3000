@@ -1,12 +1,13 @@
 'use client';
 
 import React, { createContext, useContext } from 'react';
+import type { WaveSurferType } from '@/types/audio';
 import { useGlobalAudioAnalysis } from '@/hooks/useGlobalAudioAnalysis';
 
 interface AudioAnalysisContextType {
   level: number;
   isActive: boolean;
-  registerWavesurfer: (id: string, wavesurfer: any, isPlaying: boolean, markUserInteraction?: () => void) => void;
+  registerWavesurfer: (id: string, wavesurfer: WaveSurferType, isPlaying: boolean, markUserInteraction?: () => void) => void;
   unregisterWavesurfer: (id: string) => void;
   updatePlayingState: (id: string, isPlaying: boolean) => void;
   togglePlayPauseAll: () => void;

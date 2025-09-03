@@ -22,4 +22,9 @@ export interface WavesurferRegion {
   color?: string;
   drag?: boolean;
   resize?: boolean;
+  remove?: () => void;
 }
+
+// Import the actual WaveSurfer types
+export type { default as WaveSurferType } from 'wavesurfer.js';
+export type { default as RegionsPluginType, Region } from 'wavesurfer.js/plugins/regions';
