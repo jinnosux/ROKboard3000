@@ -9,7 +9,6 @@ import soundLibrary from '@/data/sounds.json';
 
 const HomeContent = () => {
   const [columns, setColumns] = useState(4);
-  const [serialMode, setSerialMode] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
   const [tracks, setTracks] = useState<{
     id: string;
@@ -57,28 +56,18 @@ const HomeContent = () => {
       url: soundConfig.url
     };
     
-    if (serialMode) {
-      // In serial mode, add to tracks (up to 4 tracks)
-      setTracks(prev => {
-        // Don't add if track already exists or if we have 4 tracks
-        if (prev.some(track => track.id === soundConfig.id) || prev.length >= 4) {
-          return prev;
-        }
-        return [...prev, newTrack];
-      });
-    } else {
-      // In non-serial mode, replace with single track
-      setTracks([newTrack]);
-    }
+    // Always in multi-track mode - add to tracks (up to 4 tracks)
+    setTracks(prev => {
+      // Don't add if track already exists or if we have 4 tracks
+      if (prev.some(track => track.id === soundConfig.id) || prev.length >= 4) {
+        return prev;
+      }
+      return [...prev, newTrack];
+    });
   };
 
 
-  const handleSerialModeChange = useCallback((newSerialMode: boolean) => {
-    setSerialMode(newSerialMode);
-    
-    // Clear all tracks when switching modes
-    setTracks([]);
-  }, []);
+  // Removed handleSerialModeChange - always in multi-track mode
 
   const handleRemoveTrack = useCallback((trackId: string) => {
     setTracks(prev => prev.filter(track => track.id !== trackId));
@@ -114,8 +103,6 @@ const HomeContent = () => {
                 onColumnsChange={setColumns}
                 onStopAll={handleStopAll}
                 isAnyPlaying={isAnyPlaying}
-                serialMode={serialMode}
-                onSerialModeChange={handleSerialModeChange}
                 autoplay={autoplay}
                 onAutoplayChange={setAutoplay}
               />
@@ -123,7 +110,7 @@ const HomeContent = () => {
           </div>
           
           {/* Sound Buttons Grid */}
-          <div className={`grid ${getGridCols()} gap-4 flex-1 auto-rows-min`}>
+          <div className={`grid ${getGridCols()} gap-2 md:gap-4 flex-1 auto-rows-min`}>
             {soundLibrary.map(soundConfig => {
               const isInTracks = tracks.some(track => track.id === soundConfig.id);
               
@@ -140,7 +127,7 @@ const HomeContent = () => {
                     }}
                     onPlay={() => handleTrackSelect(soundConfig)}
                     onStop={() => {}}
-                    disabled={serialMode && tracks.length >= 4 && !isInTracks}
+                    disabled={tracks.length >= 4 && !isInTracks}
                     imageSrc={soundConfig.imageSrc}
                     isCompact={columns >= 8}
                     onTrackSelect={() => handleTrackSelect(soundConfig)}
@@ -157,7 +144,6 @@ const HomeContent = () => {
       
       {/* Unified Player Footer */}
       <MultiTrackPlayer
-        serialMode={serialMode}
         tracks={tracks}
         onRemoveTrack={handleRemoveTrack}
         autoplay={autoplay}
