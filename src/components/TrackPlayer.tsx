@@ -31,6 +31,7 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
   const [playbackRate, setPlaybackRate] = useState(1.0);
   const [preservePitch, setPreservePitch] = useState(false);
   const [showSpeedOptions, setShowSpeedOptions] = useState(false);
+  const [loopMode, setLoopMode] = useState(false); // New: Smart loop mode
   const hasUserInteractedRef = useRef(false);
   
   const { registerWavesurfer, unregisterWavesurfer, updatePlayingState } = useAudioAnalysis();
@@ -80,16 +81,25 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
     }
   }, [wavesurfer, isReady, autoplay, isPlaying]);
 
-  const { currentRegion } = useWavesurferRegions(
+  const { currentRegion, isLooping, startLoop, stopLoop } = useWavesurferRegions(
     wavesurfer, 
     isReady, 
     regionsEnabled, 
-    () => setLoopEnabled(false)
+    () => {
+      setLoopEnabled(false);
+      setLoopMode(false); // Reset loop mode when regions are cleared
+    }
   );
   
   useWavesurferEvents(wavesurfer, isReady, regionsEnabled);
 
-  const playRegion = () => createRegionPlayback(wavesurfer, currentRegion, loopEnabled);
+  const playRegion = useCallback(() => {
+    if (loopEnabled && currentRegion && !isLooping) {
+      // Only start loop if not already looping
+      startLoop(currentRegion);
+    }
+    createRegionPlayback(currentRegion, loopEnabled, wavesurfer);
+  }, [loopEnabled, currentRegion, isLooping, startLoop, wavesurfer]);
   
   const originalHandlePlayPause = usePlayPauseHandler(
     wavesurfer, 
@@ -100,10 +110,54 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
     playRegion
   );
 
-  const handlePlayPause = () => {
+  const handlePlayPause = useCallback(() => {
     markUserInteraction();
-    originalHandlePlayPause();
-  };
+    
+    // If there's a current region and regions are enabled, handle region play/pause
+    if (currentRegion && regionsEnabled) {
+      if (isPlaying) {
+        // If currently playing, just pause (don't stop looping, just pause playback)
+        wavesurfer?.pause();
+      } else {
+        // If not playing, check if we're within the region bounds
+        const currentTime = wavesurfer?.getCurrentTime() || 0;
+        const isWithinRegion = currentTime >= currentRegion.start && currentTime <= currentRegion.end;
+        
+        if (isWithinRegion) {
+          // We're within the region, just resume normal playback
+          wavesurfer?.play();
+          // If loop mode was enabled, re-enable the loop monitoring
+          if (loopEnabled && !isLooping) {
+            startLoop(currentRegion);
+          }
+        } else {
+          // We're outside the region, start from the beginning
+          playRegion();
+        }
+      }
+    } else {
+      originalHandlePlayPause();
+    }
+  }, [markUserInteraction, currentRegion, regionsEnabled, isPlaying, wavesurfer, loopEnabled, isLooping, startLoop, playRegion, originalHandlePlayPause]);
+
+  // Handle spacebar for this specific track when it has focus or regions
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === 'Space' && currentRegion && regionsEnabled) {
+        event.preventDefault();
+        event.stopPropagation();
+        handlePlayPause();
+      }
+    };
+
+    // Only add listener when there's a current region
+    if (currentRegion && regionsEnabled) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [currentRegion, regionsEnabled, handlePlayPause]);
 
   const handlePlaybackRateChange = useCallback((rate: number) => {
     if (wavesurfer && isReady) {
@@ -166,7 +220,19 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
         {/* Column 2: CUT/LOOP */}
         <div className="flex flex-col gap-2">
           <button
-            onClick={() => setRegionsEnabled(!regionsEnabled)}
+            onClick={() => {
+              const newRegionsEnabled = !regionsEnabled;
+              setRegionsEnabled(newRegionsEnabled);
+              
+              // If turning off regions while in loop mode, also disable loop mode
+              if (!newRegionsEnabled && loopMode) {
+                setLoopMode(false);
+                setLoopEnabled(false);
+                if (isLooping) {
+                  stopLoop();
+                }
+              }
+            }}
             disabled={!isReady}
             className={`border border-gray-600 rounded-sm shadow-inner transition-all duration-300 ${
               regionsEnabled
@@ -180,13 +246,29 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
           </button>
 
           <button
-            onClick={() => setLoopEnabled(!loopEnabled)}
-            disabled={!isReady || !currentRegion}
+            onClick={() => {
+              const newLoopMode = !loopMode;
+              setLoopMode(newLoopMode);
+              
+              if (newLoopMode) {
+                // Enable loop mode: auto-turn on CUT for region marking
+                setRegionsEnabled(true);
+                setLoopEnabled(true);
+              } else {
+                // Disable loop mode: turn off looping and CUT
+                setLoopEnabled(false);
+                setRegionsEnabled(false);
+                if (isLooping) {
+                  stopLoop();
+                }
+              }
+            }}
+            disabled={!isReady}
             className={`border border-gray-600 rounded-sm shadow-inner transition-all duration-300 ${
-              loopEnabled
+              loopMode || (loopEnabled && currentRegion)
                 ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-500/25'
                 : 'bg-black text-gray-400 hover:bg-gray-800'
-            } ${controlButtonSize} ${!currentRegion ? 'opacity-50 cursor-not-allowed' : ''}`}
+            } ${controlButtonSize}`}
           >
             <span className={`font-mono tracking-wider ${isCompact ? 'text-xs' : 'text-sm'}`}>
               LOOP

@@ -28,4 +28,8 @@ export const REGION_CONFIG = {
   color: 'rgba(16, 185, 129, 0.3)',
   drag: true,
   resize: true,
+  resizeStart: true,
+  resizeEnd: true,
+  minLength: 0.1, // Minimum 0.1 seconds
+  contentEditable: false,
 } as const;
