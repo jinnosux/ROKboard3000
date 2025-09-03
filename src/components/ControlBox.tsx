@@ -12,8 +12,6 @@ interface ControlBoxProps {
   onColumnsChange: (columns: number) => void;
   onStopAll: () => void;
   isAnyPlaying: boolean;
-  serialMode: boolean;
-  onSerialModeChange: (enabled: boolean) => void;
   autoplay: boolean;
   onAutoplayChange: (enabled: boolean) => void;
 }
@@ -25,8 +23,6 @@ const ControlBox: React.FC<ControlBoxProps> = ({
   onColumnsChange,
   onStopAll,
   isAnyPlaying,
-  serialMode,
-  onSerialModeChange,
   autoplay,
   onAutoplayChange
 }) => {
@@ -48,7 +44,7 @@ const ControlBox: React.FC<ControlBoxProps> = ({
         
         {/* Audio Control Container: VU meter, volume and STOP ALL */}
         <div className="flex flex-col items-center space-y-4">
-          <div className="flex items-center space-x-4 h-48 md:h-40">
+          <div className="flex items-center space-x-4 h-40">
             <VUMeter />
             <VolumeControl 
               volume={masterVolume} 
@@ -72,22 +68,8 @@ const ControlBox: React.FC<ControlBoxProps> = ({
           </button>
         </div>
 
-        {/* Mode Control Container: Serial, Autoplay and Layout */}
+        {/* Mode Control Container: Autoplay and Layout */}
         <div className="flex flex-col items-center space-y-3">
-          <button
-            onClick={() => onSerialModeChange(!serialMode)}
-            className={`border border-gray-600 rounded-sm shadow-inner transition-all duration-300 ${
-              serialMode
-                ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-500/25'
-                : 'bg-black text-gray-400 cursor-default'
-            }`}
-            style={{ width: '144px', height: '40px' }}
-          >
-            <span className="font-mono text-xs tracking-wider">
-              SERIAL {serialMode ? 'ON' : 'OFF'}
-            </span>
-          </button>
-
           <button
             onClick={() => onAutoplayChange(!autoplay)}
             className={`border border-gray-600 rounded-sm shadow-inner transition-all duration-300 ${
