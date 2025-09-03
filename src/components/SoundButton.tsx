@@ -96,7 +96,7 @@ const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabl
             <div className="text-lg">Loading...</div>
           ) : (
             <>
-              <div className={`font-black leading-tight tracking-tight ${isCompact ? 'text-base md:text-xl' : 'text-lg md:text-3xl'}`}>
+              <div className={`font-black leading-tight tracking-tight ${isCompact ? 'text-xs sm:text-sm md:text-base lg:text-xl' : 'text-sm sm:text-base md:text-lg lg:text-3xl'}`}>
                 {sound.name}
               </div>
               {sound.isPlaying && (
