@@ -123,7 +123,7 @@ const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabl
             <div className="text-lg">Loading...</div>
           ) : (
             <>
-              <div className={`font-black leading-tight tracking-tight ${isCompact ? 'text-xs sm:text-sm md:text-base lg:text-xl' : 'text-sm sm:text-base md:text-lg lg:text-3xl'}`}>
+              <div className={`font-black leading-tight tracking-tight ${isCompact ? 'text-xs sm:text-sm md:text-base lg:text-xl' : 'text-xs sm:text-sm md:text-base lg:text-2xl'}`}>
                 {sound.name}
               </div>
               {(isAdvancedMode ? sound.isPlaying : (simplePlayingId === sound.id)) && (
@@ -141,7 +141,7 @@ const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabl
 
         {/* Category display in bottom right corner */}
         {showCategory && category && (
-          <div className="absolute bottom-2 right-2 text-xs text-green-400 font-medium z-10 bg-black/60 px-1.5 py-0.5 rounded">
+          <div className="absolute bottom-2 right-2 text-xs text-green-400 font-medium z-10 bg-black/60 px-1.5 py-0.5 rounded hidden sm:block">
             {category}
           </div>
         )}
