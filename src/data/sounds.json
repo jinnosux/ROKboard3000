@@ -4,27 +4,55 @@
     "name": "Happiest Days Intro",
     "artist": "Pink Floyd",
     "url": "/sounds/heli.mp3",
-    "imageSrc": "/images/the-wall.jpg"
+    "imageSrc": "/images/the-wall.jpg",
+    "category": "Effect"
   },
   {
     "id": "money-intro",
     "name": "Coins & Cash Drawer",
     "artist": "Pink Floyd",
     "url": "/sounds/money-intro.mp3",
-    "imageSrc": "/images/dark-side-moon.jpg"
+    "imageSrc": "/images/dark-side-moon.jpg",
+    "category": "Effect"
   },
   {
     "id": "brick-choir",
     "name": "Another Brick Choir",
     "artist": "Pink Floyd",
     "url": "/sounds/brick-choir.mp3",
-    "imageSrc": "/images/the-wall.jpg"
+    "imageSrc": "/images/the-wall.jpg",
+    "category": "Effect"
   },
   {
     "id": "thunder-storm",
     "name": "Thunder & Rain",
-    "artist": "Nature",
+    "artist": "Various",
     "url": "/sounds/thunder-storm.mp3",
-    "imageSrc": "/images/doors.jpg"
+    "imageSrc": "/images/doors.jpg",
+    "category": "Effect"
+  },
+  {
+    "id": "motorcycle",
+    "name": "Motorcycle Take Off",
+    "artist": "Various",
+    "url": "/sounds/motorcycle.mp3",
+    "imageSrc": "/images/moto.jpg",
+    "category": "Effect"
+  },
+  {
+    "id": "samuel",
+    "name": "Ezekiel 25:17",
+    "artist": "Pulp Fiction",
+    "url": "/sounds/samuel.mp3",
+    "imageSrc": "/images/samuel.jpg",
+    "category": "Quote"
+  },
+  {
+    "id": "gladiator",
+    "name": "Are you not entertained?",
+    "artist": "Gladiator",
+    "url": "/sounds/gladiator.mp3",
+    "imageSrc": "/images/gladiator.jpg",
+    "category": "Quote"
   }
 ]
