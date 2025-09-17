@@ -31,7 +31,7 @@ const ControlBox: React.FC<ControlBoxProps> = ({
   onAdvancedChange
 }) => {
   return (
-    <div className="w-full bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 flex flex-col items-center relative">
+    <div className="w-full bg-gray-900/50 backdrop-blur-sm border-0 rounded-none md:border md:border-gray-800 md:rounded-xl p-6 flex flex-col items-center relative">
       
       {/* Title */}
       <div className="text-center mb-8">

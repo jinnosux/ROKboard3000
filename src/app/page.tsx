@@ -161,7 +161,7 @@ const HomeContent = () => {
   }, [isAnyPlaying, togglePlayPauseAll, simpleAudio, simplePlayingId]);
 
   return (
-    <div className="min-h-screen bg-black text-white font-inter p-6 pb-24 md:pb-12">
+    <div className="min-h-screen bg-black text-white font-inter p-6 pb-24 md:pb-12 px-0 pt-0 md:px-6 md:pt-6">
       <div className="w-full">
         {/* Mobile: Stack vertically, Desktop: Side by side */}
         <div className="flex flex-col md:flex-row gap-6">
@@ -192,7 +192,7 @@ const HomeContent = () => {
           </div>
           
           {/* Sound Buttons Grid */}
-          <div className={`grid ${getGridCols()} gap-2 md:gap-4 flex-1 auto-rows-min`}>
+          <div className={`grid ${getGridCols()} gap-2 md:gap-4 flex-1 auto-rows-min px-2 md:px-0`}>
             {soundLibrary.map(soundConfig => {
               const isInTracks = tracks.some(track => track.id === soundConfig.id);
               
