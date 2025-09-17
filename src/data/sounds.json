@@ -1,5 +1,12 @@
 [
   {
+    "id": "heli",
+    "name": "Happiest Days Intro",
+    "artist": "Pink Floyd",
+    "url": "/sounds/heli.mp3",
+    "imageSrc": "/images/the-wall.jpg"
+  },
+  {
     "id": "money-intro",
     "name": "Coins & Cash Drawer",
     "artist": "Pink Floyd",
@@ -19,19 +26,5 @@
     "artist": "Nature",
     "url": "/sounds/thunder-storm.mp3",
     "imageSrc": "/images/doors.jpg"
-  },
-  {
-    "id": "daftpunk",
-    "name": "Work it harder, make it better",
-    "artist": "Daft Punk",
-    "url": "/sounds/harderbetter1.mp3",
-    "imageSrc": "/images/daft.jpg"
-  },
-  {
-    "id": "daftpunk2",
-    "name": "Harder Better Faster Stronger",
-    "artist": "Daft Punk",
-    "url": "/sounds/harderbetter2.mp3",
-    "imageSrc": "/images/daft.jpg"
   }
 ]
