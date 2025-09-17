@@ -21,7 +21,7 @@ const HomeContent = () => {
   const [simpleAudio, setSimpleAudio] = useState<HTMLAudioElement | null>(null);
   const [simpleDuration, setSimpleDuration] = useState(0);
 
-  const [masterVolume, setMasterVolume] = useState(0.7);
+  const [masterVolume, setMasterVolume] = useState(0.8);
 
   const { togglePlayPauseAll, isActive: isAnyPlaying } = useAudioAnalysis();
 

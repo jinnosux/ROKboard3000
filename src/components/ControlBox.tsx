@@ -44,7 +44,7 @@ const ControlBox: React.FC<ControlBoxProps> = ({
       </div>
 
       {/* Control containers with proper grouping */}
-      <div className="flex flex-col space-y-8">
+      <div className="flex flex-col space-y-5">
         
         {/* Audio Control Container: VU meter, volume and STOP ALL */}
         <div className="flex flex-col items-center space-y-4">
@@ -73,7 +73,6 @@ const ControlBox: React.FC<ControlBoxProps> = ({
         </div>
 
         {/* Mode Control Container: Advanced, Autoplay and Layout */}
-        <div className="flex flex-col items-center space-y-3">
           <button
             onClick={() => onAdvancedChange(!advanced)}
             className={`border border-gray-600 rounded-sm shadow-inner transition-all duration-300 ${
@@ -110,7 +109,6 @@ const ControlBox: React.FC<ControlBoxProps> = ({
           />
         </div>
       </div>
-    </div>
   );
 };
 
