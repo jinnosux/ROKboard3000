@@ -43,7 +43,7 @@ const MultiTrackPlayer: React.FC<MultiTrackPlayerProps> = ({ tracks, onRemoveTra
 
   if (tracks.length === 0) {
     return (
-      <div className="mt-6 md:fixed md:bottom-0 md:left-0 md:right-0 md:mt-0 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl md:p-6">
+      <div className="mt-6 md:fixed md:bottom-0 md:left-0 md:right-0 md:mt-0 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl md:p-6 z-50">
         <div className="flex items-center justify-center">
           <div className="text-gray-500 font-mono text-sm">
             Click sound buttons to add up to 4 tracks
@@ -54,7 +54,7 @@ const MultiTrackPlayer: React.FC<MultiTrackPlayerProps> = ({ tracks, onRemoveTra
   }
 
   return (
-    <div className="mt-6 md:fixed md:bottom-0 md:left-0 md:right-0 md:mt-0 bg-transparent md:p-6">
+    <div className="mt-6 md:fixed md:bottom-0 md:left-0 md:right-0 md:mt-0 bg-transparent md:p-6 z-50">
       <div className={`grid gap-3 ${layoutClasses}`}>
         {tracks.map((track) => (
           <TrackPlayer
