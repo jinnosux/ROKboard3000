@@ -131,6 +131,8 @@ const HomeContent = () => {
                     imageSrc={soundConfig.imageSrc}
                     isCompact={columns >= 8}
                     onTrackSelect={() => handleTrackSelect(soundConfig)}
+                    category={soundConfig.category}
+                    showCategory={columns === 4 || columns === 6}
                   />
                   {isInTracks && (
                     <div className="absolute top-2 right-2 w-3 h-3 bg-emerald-500 rounded-full"></div>

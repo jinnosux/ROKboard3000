@@ -12,9 +12,11 @@ interface SoundButtonProps {
   imageSrc?: string;
   isCompact?: boolean;
   onTrackSelect?: () => void;
+  category?: string;
+  showCategory?: boolean;
 }
 
-const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabled, imageSrc, isCompact = false, onTrackSelect }) => {
+const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabled, imageSrc, isCompact = false, onTrackSelect, category, showCategory = false }) => {
   const [imageError, setImageError] = useState(false);
 
   const handleClick = () => {
@@ -107,9 +109,16 @@ const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabl
             </>
           )}
         </div>
-        
+
         {sound.isPlaying && (
           <div className="absolute inset-0 border-2 border-emerald-400 rounded-xl animate-pulse" />
+        )}
+
+        {/* Category display in bottom right corner */}
+        {showCategory && category && (
+          <div className="absolute bottom-2 right-2 text-xs text-green-400 font-medium z-20 bg-black/60 px-1.5 py-0.5 rounded">
+            {category}
+          </div>
         )}
       </button>
     </div>
