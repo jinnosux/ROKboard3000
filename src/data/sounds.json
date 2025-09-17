@@ -54,5 +54,13 @@
     "url": "/sounds/gladiator.mp3",
     "imageSrc": "/images/gladiator.jpg",
     "category": "Quote"
+  },
+  {
+    "id": "walstreet",
+    "name": "2 Keys to success",
+    "artist": "Wolf of Wall Street",
+    "url": "/sounds/wallstreet.mp3",
+    "imageSrc": "/images/wallstreet.jpg",
+    "category": "Quote"
   }
 ]
