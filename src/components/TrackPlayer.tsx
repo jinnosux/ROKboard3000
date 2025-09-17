@@ -94,12 +94,31 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
   useWavesurferEvents(wavesurfer, isReady, regionsEnabled);
 
   const playRegion = useCallback(() => {
-    if (loopEnabled && currentRegion && !isLooping) {
-      // Only start loop if not already looping
-      startLoop(currentRegion);
+    if (loopEnabled) {
+      if (currentRegion && !isLooping) {
+        // Region-based looping
+        startLoop(currentRegion);
+      } else if (!currentRegion && wavesurfer) {
+        // Full track looping - enable wavesurfer's built-in loop
+        const audioElement = wavesurfer.getMediaElement();
+        if (audioElement) {
+          audioElement.loop = true;
+        }
+      }
     }
     createRegionPlayback(currentRegion, loopEnabled, wavesurfer);
   }, [loopEnabled, currentRegion, isLooping, startLoop, wavesurfer]);
+
+  // Effect to handle loop state changes
+  useEffect(() => {
+    if (wavesurfer) {
+      const audioElement = wavesurfer.getMediaElement();
+      if (audioElement) {
+        // Enable/disable full track loop based on conditions
+        audioElement.loop = loopEnabled && !currentRegion;
+      }
+    }
+  }, [loopEnabled, currentRegion, wavesurfer]);
   
   const originalHandlePlayPause = usePlayPauseHandler(
     wavesurfer, 
