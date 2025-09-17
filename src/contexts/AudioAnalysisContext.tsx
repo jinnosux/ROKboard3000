@@ -11,6 +11,7 @@ interface AudioAnalysisContextType {
   unregisterWavesurfer: (id: string) => void;
   updatePlayingState: (id: string, isPlaying: boolean) => void;
   togglePlayPauseAll: () => void;
+  registerSimpleAudio: (audio: HTMLAudioElement) => void;
 }
 
 const AudioAnalysisContext = createContext<AudioAnalysisContextType | null>(null);

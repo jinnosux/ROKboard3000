@@ -15,24 +15,30 @@ export const useGlobalAudioAnalysis = () => {
   const [isActive, setIsActive] = useState(false);
   const wavesurferInstances = useRef<Map<string, WavesurferInstanceData>>(new Map());
   const animationFrameRef = useRef<number | null>(null);
+  const simpleAudioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
 
 
   const registerWavesurfer = useCallback((id: string, wavesurfer: WaveSurferType, isPlaying: boolean, markUserInteraction?: () => void) => {
     wavesurferInstances.current.set(id, { id, wavesurfer, isPlaying, markUserInteraction });
-    
+
     // Update global active state
-    const hasActive = Array.from(wavesurferInstances.current.values()).some(instance => instance.isPlaying);
+    const hasActive = Array.from(wavesurferInstances.current.values()).some(instance => instance.isPlaying) ||
+                     (simpleAudioRef.current && !simpleAudioRef.current.paused);
     setIsActive(hasActive);
 
   }, []);
 
   const unregisterWavesurfer = useCallback((id: string) => {
     wavesurferInstances.current.delete(id);
-    
+
     // Update global active state
-    const hasActive = Array.from(wavesurferInstances.current.values()).some(instance => instance.isPlaying);
+    const hasActive = Array.from(wavesurferInstances.current.values()).some(instance => instance.isPlaying) ||
+                     (simpleAudioRef.current && !simpleAudioRef.current.paused);
     setIsActive(hasActive);
-    
+
     // Clean up analyser if no active instances
     if (!hasActive) {
       setLevel(0);
@@ -47,12 +53,64 @@ export const useGlobalAudioAnalysis = () => {
     const instance = wavesurferInstances.current.get(id);
     if (instance) {
       instance.isPlaying = isPlaying;
-      
+
       // Update global active state
-      const hasActive = Array.from(wavesurferInstances.current.values()).some(inst => inst.isPlaying);
+      const hasActive = Array.from(wavesurferInstances.current.values()).some(inst => inst.isPlaying) ||
+                       (simpleAudioRef.current && !simpleAudioRef.current.paused);
       setIsActive(hasActive);
-      
+
     }
+  }, []);
+
+  const registerSimpleAudio = useCallback((audio: HTMLAudioElement) => {
+    simpleAudioRef.current = audio;
+
+    // Add event listeners to track simple audio state
+    const updateSimpleAudioState = () => {
+      const hasActive = Array.from(wavesurferInstances.current.values()).some(instance => instance.isPlaying) ||
+                       (simpleAudioRef.current && !simpleAudioRef.current.paused);
+      setIsActive(hasActive);
+    };
+
+    audio.addEventListener('play', updateSimpleAudioState);
+    audio.addEventListener('pause', updateSimpleAudioState);
+    audio.addEventListener('ended', updateSimpleAudioState);
+
+    // Try to set up Web Audio API for analysis (but don't break if it fails)
+    const setupWebAudio = () => {
+      try {
+        if (!audioContextRef.current) {
+          audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+          analyserRef.current = audioContextRef.current.createAnalyser();
+          analyserRef.current.fftSize = 256;
+
+          sourceRef.current = audioContextRef.current.createMediaElementSource(audio);
+          sourceRef.current.connect(analyserRef.current);
+          analyserRef.current.connect(audioContextRef.current.destination);
+        }
+      } catch (error) {
+        console.warn('Could not set up Web Audio API for VU meter:', error);
+        // Clear refs if setup failed
+        audioContextRef.current = null;
+        analyserRef.current = null;
+        sourceRef.current = null;
+      }
+    };
+
+    // Try setup on first user interaction
+    const setupOnInteraction = () => {
+      setupWebAudio();
+      audio.removeEventListener('play', setupOnInteraction);
+    };
+    audio.addEventListener('play', setupOnInteraction);
+
+    // Return cleanup function
+    return () => {
+      audio.removeEventListener('play', updateSimpleAudioState);
+      audio.removeEventListener('pause', updateSimpleAudioState);
+      audio.removeEventListener('ended', updateSimpleAudioState);
+      audio.removeEventListener('play', setupOnInteraction);
+    };
   }, []);
 
   useEffect(() => {
@@ -71,10 +129,13 @@ export const useGlobalAudioAnalysis = () => {
         return;
       }
 
+      // Check if simple audio is playing
+      const isSimpleAudioPlaying = simpleAudioRef.current && !simpleAudioRef.current.paused;
+
       // Get the currently playing wavesurfer instance
       const activeInstances = Array.from(wavesurferInstances.current.values()).filter(inst => inst.isPlaying);
-      
-      if (activeInstances.length === 0) {
+
+      if (activeInstances.length === 0 && !isSimpleAudioPlaying) {
         setLevel(0);
         if (isActive) {
           animationFrameRef.current = requestAnimationFrame(updateLevel);
@@ -82,12 +143,60 @@ export const useGlobalAudioAnalysis = () => {
         return;
       }
 
-      // Use the first active instance (we can enhance this later for multiple instances)
-      const activeWavesurfer = activeInstances[0].wavesurfer;
-      
-      try {
-        // Get current playback position and duration
-        const currentTime = activeWavesurfer.getCurrentTime ? activeWavesurfer.getCurrentTime() : 0;
+      // Prioritize simple audio if it's playing
+      if (isSimpleAudioPlaying) {
+        if (analyserRef.current) {
+          try {
+            const bufferLength = analyserRef.current.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyserRef.current.getByteFrequencyData(dataArray);
+
+            // Calculate RMS (Root Mean Square) for better VU response
+            let sum = 0;
+            for (let i = 0; i < bufferLength; i++) {
+              sum += (dataArray[i] / 255) * (dataArray[i] / 255);
+            }
+            const rms = Math.sqrt(sum / bufferLength);
+
+            // Apply scaling and smoothing - balanced approach
+            let scaledLevel = Math.min(rms * 2, 1.0);
+
+            if (scaledLevel < 0.01) {
+              scaledLevel = 0;
+            } else if (scaledLevel < 0.03) {
+              scaledLevel = scaledLevel * 0.8; // Slightly reduce very quiet audio
+            } else {
+              scaledLevel = Math.max(0.06, scaledLevel); // No artificial cap - show real values
+            }
+
+            setLevel(scaledLevel);
+
+            if (isActive) {
+              animationFrameRef.current = requestAnimationFrame(updateLevel);
+            }
+            return;
+          } catch (error) {
+            console.warn('Error analyzing simple audio:', error);
+          }
+        }
+
+        // Fallback: Simple animated pattern when Web Audio API is not available
+        const fallbackLevel = Math.max(0.2, Math.min(0.7, Math.abs(Math.sin(Date.now() * 0.01)) * 0.5 + 0.3));
+        setLevel(fallbackLevel);
+
+        if (isActive) {
+          animationFrameRef.current = requestAnimationFrame(updateLevel);
+        }
+        return;
+      }
+
+      // Fall back to wavesurfer analysis
+      if (activeInstances.length > 0) {
+        const activeWavesurfer = activeInstances[0].wavesurfer;
+
+        try {
+          // Get current playback position and duration
+          const currentTime = activeWavesurfer.getCurrentTime ? activeWavesurfer.getCurrentTime() : 0;
         const duration = activeWavesurfer.getDuration ? activeWavesurfer.getDuration() : 1;
         
         // Try to get the actual waveform data from wavesurfer
@@ -138,14 +247,15 @@ export const useGlobalAudioAnalysis = () => {
         }
         
         setLevel(smoothedLevel);
-        
-      } catch (error) {
-        console.warn('Error getting wavesurfer waveform data:', error);
-        // Fallback to simple time-based pattern
-        const fallbackLevel = Math.max(0.1, Math.min(0.8, Math.abs(Math.sin(Date.now() * 0.005)) * 0.6 + 0.2));
-        setLevel(fallbackLevel);
+
+        } catch (error) {
+          console.warn('Error getting wavesurfer waveform data:', error);
+          // Fallback to simple time-based pattern
+          const fallbackLevel = Math.max(0.1, Math.min(0.8, Math.abs(Math.sin(Date.now() * 0.005)) * 0.6 + 0.2));
+          setLevel(fallbackLevel);
+        }
       }
-      
+
       if (isActive) {
         animationFrameRef.current = requestAnimationFrame(updateLevel);
       }
@@ -196,5 +306,6 @@ export const useGlobalAudioAnalysis = () => {
     unregisterWavesurfer,
     updatePlayingState,
     togglePlayPauseAll,
+    registerSimpleAudio,
   };
 };

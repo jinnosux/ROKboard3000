@@ -23,14 +23,16 @@ const HomeContent = () => {
 
   const [masterVolume, setMasterVolume] = useState(0.8);
 
-  const { togglePlayPauseAll, isActive: isAnyPlaying } = useAudioAnalysis();
+  const { togglePlayPauseAll, isActive: isAnyPlaying, registerSimpleAudio } = useAudioAnalysis();
 
   // Initialize audio element on client side only
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setSimpleAudio(new Audio());
+      const audio = new Audio();
+      setSimpleAudio(audio);
+      registerSimpleAudio(audio);
     }
-  }, []);
+  }, [registerSimpleAudio]);
 
   // Simple audio playback handler
   const handleSimplePlay = (soundId: string, soundUrl: string) => {
