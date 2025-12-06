@@ -63,4 +63,13 @@
     "imageSrc": "/images/wallstreet.jpg",
     "category": "Quote"
   }
+  ,
+  {
+    "id": "vlado",
+    "name": "Espresso",
+    "artist": "Vlado Georgijev",
+    "url": "/sounds/vlado.mp3",
+    "imageSrc": "/images/vlado.jpg",
+    "category": "Quote"
+  }
 ]
