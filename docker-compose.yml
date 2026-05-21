@@ -1,0 +1,9 @@
+services:
+  static-site:
+    build: .
+    restart: unless-stopped
+
+networks:
+  default:
+    name: proxy_net
+    external: true
