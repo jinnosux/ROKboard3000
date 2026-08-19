@@ -8,51 +8,58 @@ Soundboard for band's live performances with custom sound effects and advanced a
 
 ## Description
 
-Web-based soundboard with master volume control, responsive design, and high-quality audio playback. Features real-time waveform visualization, volume analysis, pitch-preserved speed control, and professional audio manipulation tools for live performances.
-
-## Features
-
-### **Audio Control**
-- **Master Volume Control** - Global volume with VU meter visualization
-- **Individual Track Control** - Up to 4 simultaneous tracks in serial mode
-- **Region-based Playback** - Cut specific sections and loop them
-- **Speed Control** - 0.25x to 2.0x playback speed with 5 preset options
-- **Pitch Preservation** - Toggle to maintain or shift pitch when changing speed
-
-### **Live Performance Tools**
-- **Serial Mode** - Queue up to 4 tracks for seamless performance
-- **Autoplay** - Automatic track progression
-- **STOP ALL** - Emergency stop for all playing tracks
-- **Responsive Grid** - 4-10 column layouts for different screen sizes
-
-### **Visual Features**
-- **Real-time Waveform** - Interactive audio visualization
-- **VU Meter** - Master audio level monitoring
-- **Compact Interface** - Optimized for live performance use
+Static web soundboard. 86 sounds across 5 categories. **Simple mode** plays one sound per tap;
+**advanced mode** loads up to 4 tracks into a waveform player with region CUT/LOOP, 0.25x–2x
+speed, and pitch preservation. Plus master volume with VU meter, STOP ALL, autoplay, and a
+4–10 column responsive grid.
 
 ## Tech Stack
 
-- **Next.js 14** - React framework
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **Web Audio API** - Audio playback
-- **WaveSurfer.js v7** - Advanced audio waveform visualization and manipulation
+Next.js 15 (App Router, static export) · React 19 · TypeScript · Tailwind v4 ·
+WaveSurfer.js v7 · Web Audio API
 
-## Configuration
+## Commands
 
-1. **Installation**:
-   ```bash
-   npm install
-   npm run dev
-   ```
+```bash
+npm install
+npm run dev      # dev server
+npm run build    # static export -> out/
+npm run lint
+npm run images   # downscale public/images to fit 400x400
+```
 
-2. **Add sounds**: Place audio files (MP3, WAV, OGG) in `public/sounds/`
+## Adding sounds
 
-3. **Add images**: (optionally) Place image files (JPG, PNG) in `public/images/`
+1. Drop the `.mp3` in `public/sounds/<category>/` — folder name is the category id
+   (`samples`, `vocals`, `fx`, `brainfarts`, `loops`).
+   Convert first if needed: `ffmpeg -i in.wav -c:a libmp3lame -b:a 256k out.mp3`
+2. Name it URL-safely: letters, digits, `_`, `.`, `-` only. No spaces or commas — static host.
+3. Add an entry to `src/data/sounds.json`:
 
-4. **Update library**: Edit `data/sounds.json` with data and sound/image paths
+```json
+{
+  "id": "lil-jon-yeah",
+  "name": "Lil Jon YEAH",
+  "artist": "Lil Jon",
+  "url": "/sounds/vocals/Lil_Jon_YEAH.mp3",
+  "category": "vocals",
+  "imageSrc": "/images/lil-jon-yeah.jpg"
+}
+```
 
-5. **Live setup**: Connect audio output to mixer line input
+`id` must be unique. `imageSrc` is optional — without it the sound uses its category gradient
+from `src/data/categories.json`.
+
+## Adding images
+
+Drop in `public/images/`, point `imageSrc` at it, run `npm run images`. Fits everything inside
+400×400 and re-encodes as JPEG; skips what's already small, so it's safe to re-run.
+**Rewrites in place** — keep originals elsewhere. Flags: `--dry`, `--max 800`.
+
+## Deployment
+
+Push to `main` → GitHub Actions builds a Docker image serving `out/` from nginx.
+For live use: connect audio output to mixer line input.
 
 ## License
 
