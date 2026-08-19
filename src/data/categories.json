@@ -1,0 +1,27 @@
+[
+  {
+    "id": "samples",
+    "label": "Samples",
+    "gradient": ["#064e3b", "#155e75"]
+  },
+  {
+    "id": "vocals",
+    "label": "Vocals",
+    "gradient": ["#701a75", "#312e81"]
+  },
+  {
+    "id": "fx",
+    "label": "FX",
+    "gradient": ["#78350f", "#7f1d1d"]
+  },
+  {
+    "id": "brainfarts",
+    "label": "Brainfarts",
+    "gradient": ["#365314", "#713f12"]
+  },
+  {
+    "id": "loops",
+    "label": "Loops",
+    "gradient": ["#0c4a6e", "#1e3a8a"]
+  }
+]

@@ -1,27 +1,31 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Sound } from '@/hooks/useAudio';
+import { gradientStyle, type Gradient } from '@/data/soundLibrary';
 
 interface SoundButtonProps {
   sound: Sound;
   onPlay: () => void;
   onStop: () => void;
   disabled?: boolean;
+  /** Already resolved: sound override -> category default -> undefined. */
   imageSrc?: string;
+  gradient?: Gradient;
   isCompact?: boolean;
   onTrackSelect?: () => void;
   category?: string;
   showCategory?: boolean;
   isAdvancedMode?: boolean;
-  masterVolume?: number;
   simplePlayingId?: string | null;
   onSimplePlay?: (soundId: string, soundUrl: string) => void;
   simpleDuration?: number;
 }
 
-const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabled, imageSrc, isCompact = false, onTrackSelect, category, showCategory = false, isAdvancedMode = true, masterVolume = 0.7, simplePlayingId, onSimplePlay, simpleDuration = 0 }) => {
+const DEFAULT_GRADIENT: Gradient = ['#064e3b', '#155e75'];
+
+const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabled, imageSrc, gradient, isCompact = false, onTrackSelect, category, showCategory = false, isAdvancedMode = true, simplePlayingId, onSimplePlay, simpleDuration = 0 }) => {
   const [imageError, setImageError] = useState(false);
 
 
@@ -61,10 +65,6 @@ const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabl
     return 'bg-gray-900 hover:bg-gray-800 text-white border-gray-600 hover:border-gray-400 hover:shadow-lg';
   };
 
-  const getBackgroundGradient = () => {
-    // Aurora Borealis inspired gradient - consistent for all buttons
-    return 'from-emerald-900 via-teal-900 to-cyan-900';
-  };
 
   return (
     <div className="w-full h-full">
@@ -89,7 +89,10 @@ const SoundButton: React.FC<SoundButtonProps> = ({ sound, onPlay, onStop, disabl
             />
           </div>
         ) : (
-          <div className={`absolute inset-0 opacity-30 bg-gradient-to-br ${getBackgroundGradient()}`} />
+          <div
+            className="absolute inset-0 opacity-30 rounded-xl"
+            style={gradientStyle(gradient ?? DEFAULT_GRADIENT)}
+          />
         )}
         
         {/* Progress overlay that moves from left to right */}

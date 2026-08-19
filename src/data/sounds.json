@@ -1,67 +1,690 @@
 [
   {
+    "id": "brick-choir",
+    "name": "Another Brick Choir",
+    "artist": "Pink Floyd",
+    "url": "/sounds/samples/brick-choir.mp3",
+    "category": "samples",
+    "imageSrc": "/images/the-wall.jpg"
+  },
+  {
     "id": "heli",
     "name": "Happiest Days Intro",
     "artist": "Pink Floyd",
-    "url": "/sounds/heli.mp3",
-    "imageSrc": "/images/the-wall.jpg",
-    "category": "Effect"
+    "url": "/sounds/samples/heli.mp3",
+    "category": "samples",
+    "imageSrc": "/images/the-wall.jpg"
   },
   {
     "id": "money-intro",
     "name": "Coins & Cash Drawer",
     "artist": "Pink Floyd",
-    "url": "/sounds/money-intro.mp3",
-    "imageSrc": "/images/dark-side-moon.jpg",
-    "category": "Effect"
-  },
-  {
-    "id": "brick-choir",
-    "name": "Another Brick Choir",
-    "artist": "Pink Floyd",
-    "url": "/sounds/brick-choir.mp3",
-    "imageSrc": "/images/the-wall.jpg",
-    "category": "Effect"
+    "url": "/sounds/samples/money-intro.mp3",
+    "category": "samples",
+    "imageSrc": "/images/dark-side-moon.jpg"
   },
   {
     "id": "thunder-storm",
     "name": "Thunder & Rain",
     "artist": "Various",
-    "url": "/sounds/thunder-storm.mp3",
-    "imageSrc": "/images/doors.jpg",
-    "category": "Effect"
+    "url": "/sounds/samples/thunder-storm.mp3",
+    "category": "samples",
+    "imageSrc": "/images/doors.jpg"
   },
   {
-    "id": "samuel",
-    "name": "Ezekiel 25:17",
-    "artist": "Pulp Fiction",
-    "url": "/sounds/samuel.mp3",
-    "imageSrc": "/images/samuel.jpg",
-    "category": "Quote"
+    "id": "50-cent-go",
+    "name": "50 Cent go",
+    "artist": "50 Cent",
+    "url": "/sounds/vocals/50_Cent_go.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/50.jpg"
+  },
+  {
+    "id": "50-cent-you-can-find-me",
+    "name": "50 Cent you can find me",
+    "artist": "50 Cent",
+    "url": "/sounds/vocals/50_Cent_you_can_find_me.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/50.jpg"
+  },
+  {
+    "id": "andre-123",
+    "name": "andre 123",
+    "artist": "",
+    "url": "/sounds/vocals/andre_123.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/andre.jpeg"
+  },
+  {
+    "id": "bad-bunny-ay",
+    "name": "Bad Bunny ay",
+    "artist": "Bad Bunny",
+    "url": "/sounds/vocals/Bad_Bunny_ay.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/bad-bunny-ay.jpg"
+  },
+  {
+    "id": "bangarang",
+    "name": "Bangarang",
+    "artist": "",
+    "url": "/sounds/vocals/Bangarang.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/bangarang.jpg"
+  },
+  {
+    "id": "call-911-now",
+    "name": "CALL 911 NOW",
+    "artist": "",
+    "url": "/sounds/vocals/CALL_911_NOW.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/call-911-now.jpg"
+  },
+  {
+    "id": "get-out",
+    "name": "GET OUT",
+    "artist": "",
+    "url": "/sounds/vocals/GET_OUT.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/get-out.jpg"
   },
   {
     "id": "gladiator",
     "name": "Are you not entertained?",
     "artist": "Gladiator",
-    "url": "/sounds/gladiator.mp3",
-    "imageSrc": "/images/gladiator.jpg",
-    "category": "Quote"
+    "url": "/sounds/vocals/gladiator.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/gladiator.jpg"
   },
   {
-    "id": "walstreet",
-    "name": "2 Keys to success",
-    "artist": "Wolf of Wall Street",
-    "url": "/sounds/wallstreet.mp3",
-    "imageSrc": "/images/wallstreet.jpg",
-    "category": "Quote"
-  }
-  ,
+    "id": "harder-better-faster-stronger-acapella",
+    "name": "Harder Better Faster Stronger Acapella",
+    "artist": "",
+    "url": "/sounds/vocals/Harder_Better_Faster_Stronger_Acapella.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/daft.jpg"
+  },
+  {
+    "id": "hold-up",
+    "name": "hold up",
+    "artist": "",
+    "url": "/sounds/vocals/hold_up.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/hold-up.jpg"
+  },
+  {
+    "id": "i-cant-stop",
+    "name": "i cant stop",
+    "artist": "",
+    "url": "/sounds/vocals/i_cant_stop.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/i-cant-stop.jpg"
+  },
+  {
+    "id": "levels-vocals",
+    "name": "levels vocals",
+    "artist": "",
+    "url": "/sounds/vocals/levels_vocals.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/levels-vocals.jpg"
+  },
+  {
+    "id": "lil-jon-ok",
+    "name": "Lil Jon OK",
+    "artist": "Lil Jon",
+    "url": "/sounds/vocals/Lil_Jon_OK.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/lil-jon-ok.jpg"
+  },
+  {
+    "id": "lil-jon-what",
+    "name": "Lil Jon WHAT",
+    "artist": "Lil Jon",
+    "url": "/sounds/vocals/Lil_Jon_WHAT.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/lil-jon-what.jpg"
+  },
+  {
+    "id": "lil-jon-yeah",
+    "name": "Lil Jon YEAH",
+    "artist": "Lil Jon",
+    "url": "/sounds/vocals/Lil_Jon_YEAH.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/lil-jon-yeah.jpg"
+  },
+  {
+    "id": "look-at-this-dude",
+    "name": "look at this dude",
+    "artist": "",
+    "url": "/sounds/vocals/look_at_this_dude.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/look-at-this-dude.jpg"
+  },
+  {
+    "id": "macklemore-3rd-grade",
+    "name": "Macklemore 3rd grade",
+    "artist": "Macklemore",
+    "url": "/sounds/vocals/Macklemore_3rd_grade.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/macklemore-3rd-grade.jpg"
+  },
+  {
+    "id": "samuel",
+    "name": "Ezekiel 25:17",
+    "artist": "Pulp Fiction",
+    "url": "/sounds/vocals/samuel.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/samuel.jpg"
+  },
+  {
+    "id": "smoke-weed-everyday",
+    "name": "smoke weed everyday",
+    "artist": "",
+    "url": "/sounds/vocals/smoke_weed_everyday.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/smoke-weed-everyday.jpg"
+  },
+  {
+    "id": "spice",
+    "name": "spice",
+    "artist": "",
+    "url": "/sounds/vocals/spice.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/spice.jpg"
+  },
+  {
+    "id": "technologic-acapella",
+    "name": "Technologic Acapella",
+    "artist": "",
+    "url": "/sounds/vocals/Technologic_Acapella.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/daft.jpg"
+  },
+  {
+    "id": "trap-a-holics-damn-son",
+    "name": "Trap-A-Holics damn son",
+    "artist": "Trap-A-Holics",
+    "url": "/sounds/vocals/Trap-A-Holics_damn_son.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/trapaholics.jpg"
+  },
+  {
+    "id": "trap-a-holics-hood-classic",
+    "name": "Trap-A-Holics hood classic",
+    "artist": "Trap-A-Holics",
+    "url": "/sounds/vocals/Trap-A-Holics_hood_classic.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/trapaholics.jpg"
+  },
+  {
+    "id": "trap-a-holics-real-trap-shit1",
+    "name": "Trap-A-Holics real trap shit1",
+    "artist": "Trap-A-Holics",
+    "url": "/sounds/vocals/Trap-A-Holics_real_trap_shit1.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/trapaholics.jpg"
+  },
+  {
+    "id": "trap-a-holics-real-trap-shit2",
+    "name": "Trap-A-Holics real trap shit2",
+    "artist": "Trap-A-Holics",
+    "url": "/sounds/vocals/Trap-A-Holics_real_trap_shit2.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/trapaholics.jpg"
+  },
+  {
+    "id": "travis-its-lit",
+    "name": "travis its lit",
+    "artist": "",
+    "url": "/sounds/vocals/travis_its_lit.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/travis-its-lit.jpg"
+  },
   {
     "id": "vlado",
     "name": "Espresso",
     "artist": "Vlado Georgijev",
-    "url": "/sounds/vlado.mp3",
-    "imageSrc": "/images/vlado.jpg",
-    "category": "Quote"
+    "url": "/sounds/vocals/vlado.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/vlado.jpg"
+  },
+  {
+    "id": "wait-wait-wait",
+    "name": "wait wait wait",
+    "artist": "",
+    "url": "/sounds/vocals/wait_wait_wait.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/wait-wait-wait.jpg"
+  },
+  {
+    "id": "wallstreet",
+    "name": "2 Keys to success",
+    "artist": "Wolf of Wall Street",
+    "url": "/sounds/vocals/wallstreet.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/wallstreet.jpg"
+  },
+  {
+    "id": "what-the-heeeeeeell",
+    "name": "WHAT THE HEEEEEEELL",
+    "artist": "",
+    "url": "/sounds/vocals/WHAT_THE_HEEEEEEELL.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/what-the-heeeeeeell.jpg"
+  },
+  {
+    "id": "airhorn",
+    "name": "airhorn",
+    "artist": "",
+    "url": "/sounds/fx/airhorn.mp3",
+    "category": "fx",
+    "imageSrc": "/images/airhorn.jpg"
+  },
+  {
+    "id": "bonk",
+    "name": "bonk",
+    "artist": "",
+    "url": "/sounds/fx/bonk.mp3",
+    "category": "fx",
+    "imageSrc": "/images/bonk.jpg"
+  },
+  {
+    "id": "booo",
+    "name": "booo",
+    "artist": "",
+    "url": "/sounds/fx/booo.mp3",
+    "category": "fx",
+    "imageSrc": "/images/booo.jpg"
+  },
+  {
+    "id": "brain-fart",
+    "name": "brain fart",
+    "artist": "",
+    "url": "/sounds/fx/brain_fart.mp3",
+    "category": "fx",
+    "imageSrc": "/images/brain-fart.jpg"
+  },
+  {
+    "id": "car-crash",
+    "name": "car crash",
+    "artist": "",
+    "url": "/sounds/fx/car_crash.mp3",
+    "category": "fx",
+    "imageSrc": "/images/car-crash.jpg"
+  },
+  {
+    "id": "cave-sound",
+    "name": "cave sound",
+    "artist": "",
+    "url": "/sounds/fx/cave_sound.mp3",
+    "category": "fx",
+    "imageSrc": "/images/cave-sound.jpg"
+  },
+  {
+    "id": "dj-siren",
+    "name": "dj siren",
+    "artist": "",
+    "url": "/sounds/fx/dj_siren.mp3",
+    "category": "fx",
+    "imageSrc": "/images/dj-siren.jpg"
+  },
+  {
+    "id": "dolphin",
+    "name": "dolphin",
+    "artist": "",
+    "url": "/sounds/fx/dolphin.mp3",
+    "category": "fx",
+    "imageSrc": "/images/dolphin.jpg"
+  },
+  {
+    "id": "ea-sports",
+    "name": "ea sports",
+    "artist": "",
+    "url": "/sounds/fx/ea_sports.mp3",
+    "category": "fx",
+    "imageSrc": "/images/ea-sports.jpg"
+  },
+  {
+    "id": "engine-start",
+    "name": "engine start",
+    "artist": "",
+    "url": "/sounds/fx/engine_start.mp3",
+    "category": "fx",
+    "imageSrc": "/images/engine-start.jpg"
+  },
+  {
+    "id": "fahhh",
+    "name": "FAHHH",
+    "artist": "",
+    "url": "/sounds/fx/FAHHH.mp3",
+    "category": "fx",
+    "imageSrc": "/images/fahhh.jpg"
+  },
+  {
+    "id": "glass-window-break",
+    "name": "glass window break",
+    "artist": "",
+    "url": "/sounds/fx/glass_window_break.mp3",
+    "category": "fx",
+    "imageSrc": "/images/glass-window-break.jpg"
+  },
+  {
+    "id": "lightsaber-sounds",
+    "name": "lightsaber sounds",
+    "artist": "",
+    "url": "/sounds/fx/lightsaber_sounds.mp3",
+    "category": "fx",
+    "imageSrc": "/images/lightsaber-sounds.jpg"
+  },
+  {
+    "id": "mac-startup",
+    "name": "mac startup",
+    "artist": "",
+    "url": "/sounds/fx/mac_startup.mp3",
+    "category": "fx",
+    "imageSrc": "/images/mac-startup.jpg"
+  },
+  {
+    "id": "metal-pipe",
+    "name": "metal pipe",
+    "artist": "",
+    "url": "/sounds/fx/metal_pipe.mp3",
+    "category": "fx",
+    "imageSrc": "/images/metal-pipe.jpg"
+  },
+  {
+    "id": "phonk-rattle",
+    "name": "phonk rattle",
+    "artist": "",
+    "url": "/sounds/fx/phonk_rattle.mp3",
+    "category": "fx",
+    "imageSrc": "/images/phonk-rattle.jpg"
+  },
+  {
+    "id": "police-radio",
+    "name": "police radio",
+    "artist": "",
+    "url": "/sounds/fx/police_radio.mp3",
+    "category": "fx",
+    "imageSrc": "/images/police-radio.jpg"
+  },
+  {
+    "id": "shotgun-explosion",
+    "name": "shotgun explosion",
+    "artist": "",
+    "url": "/sounds/fx/shotgun_explosion.mp3",
+    "category": "fx",
+    "imageSrc": "/images/shotgun-explosion.jpg"
+  },
+  {
+    "id": "taco-bell",
+    "name": "taco bell",
+    "artist": "",
+    "url": "/sounds/fx/taco_bell.mp3",
+    "category": "fx",
+    "imageSrc": "/images/taco-bell.jpg"
+  },
+  {
+    "id": "undertaker-bell",
+    "name": "undertaker bell",
+    "artist": "",
+    "url": "/sounds/fx/undertaker_bell.mp3",
+    "category": "fx",
+    "imageSrc": "/images/undertaker-bell.jpg"
+  },
+  {
+    "id": "vine-boom",
+    "name": "vine boom",
+    "artist": "",
+    "url": "/sounds/fx/vine_boom.mp3",
+    "category": "fx",
+    "imageSrc": "/images/vine-boom.jpg"
+  },
+  {
+    "id": "yay",
+    "name": "YAY",
+    "artist": "",
+    "url": "/sounds/fx/YAY.mp3",
+    "category": "fx",
+    "imageSrc": "/images/yay.jpg"
+  },
+  {
+    "id": "yung-riser",
+    "name": "yung riser",
+    "artist": "",
+    "url": "/sounds/fx/yung_riser.mp3",
+    "category": "fx",
+    "imageSrc": "/images/yung-riser.jpg"
+  },
+  {
+    "id": "a-trak-laser",
+    "name": "a trak laser",
+    "artist": "",
+    "url": "/sounds/brainfarts/a_trak_laser.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/a-trak-laser.jpg"
+  },
+  {
+    "id": "auughhh",
+    "name": "auughhh",
+    "artist": "",
+    "url": "/sounds/brainfarts/auughhh.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/auughhh.jpg"
+  },
+  {
+    "id": "bad-to-the-bone",
+    "name": "bad to the bone",
+    "artist": "",
+    "url": "/sounds/brainfarts/bad_to_the_bone.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/bad-to-the-bone.jpg"
+  },
+  {
+    "id": "coin",
+    "name": "coin",
+    "artist": "",
+    "url": "/sounds/brainfarts/coin.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/coin.jpg"
+  },
+  {
+    "id": "fart",
+    "name": "fart",
+    "artist": "",
+    "url": "/sounds/brainfarts/fart.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/fart.jpg"
+  },
+  {
+    "id": "gamecube-startup",
+    "name": "gamecube startup",
+    "artist": "",
+    "url": "/sounds/brainfarts/gamecube_startup.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/gamecube-startup.jpg"
+  },
+  {
+    "id": "jet-set-radio-hits",
+    "name": "jet set radio hits",
+    "artist": "",
+    "url": "/sounds/brainfarts/jet_set_radio_hits.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/jet-set-radio-hits.jpg"
+  },
+  {
+    "id": "milk",
+    "name": "milk",
+    "artist": "",
+    "url": "/sounds/brainfarts/milk.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/milk.jpg"
+  },
+  {
+    "id": "oh-hell-no",
+    "name": "oh hell no",
+    "artist": "",
+    "url": "/sounds/brainfarts/oh_hell_no.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/oh-hell-no.jpg"
+  },
+  {
+    "id": "oooh-ma-gaad",
+    "name": "OOOH MA GAAD",
+    "artist": "",
+    "url": "/sounds/brainfarts/OOOH_MA_GAAD.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/oooh-ma-gaad.jpg"
+  },
+  {
+    "id": "pika",
+    "name": "pika",
+    "artist": "",
+    "url": "/sounds/brainfarts/pika.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/pika.jpg"
+  },
+  {
+    "id": "power-up",
+    "name": "power up",
+    "artist": "",
+    "url": "/sounds/brainfarts/power_up.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/power-up.jpg"
+  },
+  {
+    "id": "rave-hit",
+    "name": "rave hit",
+    "artist": "",
+    "url": "/sounds/brainfarts/rave_hit.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/rave-hit.jpg"
+  },
+  {
+    "id": "record-stop1",
+    "name": "record stop1",
+    "artist": "",
+    "url": "/sounds/brainfarts/record_stop1.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/record-stop1.jpg"
+  },
+  {
+    "id": "record-stop2",
+    "name": "record stop2",
+    "artist": "",
+    "url": "/sounds/brainfarts/record_stop2.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/record-stop2.jpg"
+  },
+  {
+    "id": "sad-spongeboy",
+    "name": "sad spongeboy",
+    "artist": "",
+    "url": "/sounds/brainfarts/sad_spongeboy.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/sad-spongeboy.jpg"
+  },
+  {
+    "id": "sonic-ring-collect",
+    "name": "sonic ring collect",
+    "artist": "",
+    "url": "/sounds/brainfarts/sonic_ring_collect.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/sonic-ring-collect.jpg"
+  },
+  {
+    "id": "sonic-ring-drop",
+    "name": "sonic ring drop",
+    "artist": "",
+    "url": "/sounds/brainfarts/sonic_ring_drop.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/sonic-ring-drop.jpg"
+  },
+  {
+    "id": "wilhelm",
+    "name": "wilhelm",
+    "artist": "",
+    "url": "/sounds/brainfarts/wilhelm.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/wilhelm.jpg"
+  },
+  {
+    "id": "wow",
+    "name": "WOW",
+    "artist": "",
+    "url": "/sounds/brainfarts/WOW.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/wow.jpg"
+  },
+  {
+    "id": "xp-startup",
+    "name": "xp startup",
+    "artist": "",
+    "url": "/sounds/brainfarts/xp_startup.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/xp-startup.jpg"
+  },
+  {
+    "id": "yall-ready-for-this",
+    "name": "yall ready for this",
+    "artist": "",
+    "url": "/sounds/brainfarts/yall_ready_for_this.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/yall-ready-for-this.jpg"
+  },
+  {
+    "id": "yeah-boiii",
+    "name": "yeah boiii",
+    "artist": "",
+    "url": "/sounds/brainfarts/yeah_boiii.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/yeah-boiii.jpg"
+  },
+  {
+    "id": "yes-omg",
+    "name": "YES OMG",
+    "artist": "",
+    "url": "/sounds/brainfarts/YES_OMG.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/yes-omg.jpg"
+  },
+  {
+    "id": "you-need-to-leave",
+    "name": "you need to leave",
+    "artist": "",
+    "url": "/sounds/brainfarts/you_need_to_leave.mp3",
+    "category": "brainfarts",
+    "imageSrc": "/images/you-need-to-leave.jpg"
+  },
+  {
+    "id": "space-invaders",
+    "name": "space invaders",
+    "artist": "",
+    "url": "/sounds/loops/space_invaders.mp3",
+    "category": "loops",
+    "imageSrc": "/images/space-invaders.jpg"
+  },
+  {
+    "id": "think-break-1",
+    "name": "think break 1",
+    "artist": "",
+    "url": "/sounds/loops/think_break_1.mp3",
+    "category": "loops",
+    "imageSrc": "/images/think-break-1.jpg"
+  },
+  {
+    "id": "think-break-2",
+    "name": "think break 2",
+    "artist": "",
+    "url": "/sounds/loops/think_break_2.mp3",
+    "category": "loops",
+    "imageSrc": "/images/think-break-2.jpg"
+  },
+  {
+    "id": "tokyo-drift",
+    "name": "tokyo drift",
+    "artist": "",
+    "url": "/sounds/loops/tokyo_drift.mp3",
+    "category": "loops",
+    "imageSrc": "/images/tokyo-drift.jpg"
   }
 ]
