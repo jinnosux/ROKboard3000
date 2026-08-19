@@ -1,8 +1,12 @@
 .git
 .github
 .next
+out
 node_modules
 npm-debug.log*
 README.md
+CLAUDE.md
 Dockerfile
 .dockerignore
+.DS_Store
+**/.DS_Store

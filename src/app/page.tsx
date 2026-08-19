@@ -289,6 +289,7 @@ const HomeContent = () => {
           tracks={tracks}
           onRemoveTrack={handleRemoveTrack}
           autoplay={autoplay}
+          masterVolume={masterVolume}
         />
       )}
     </div>

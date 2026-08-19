@@ -14,9 +14,10 @@ interface MultiTrackPlayerProps {
   tracks: Track[];
   onRemoveTrack?: (trackId: string) => void;
   autoplay?: boolean;
+  masterVolume?: number;
 }
 
-const MultiTrackPlayer: React.FC<MultiTrackPlayerProps> = ({ tracks, onRemoveTrack, autoplay = false }) => {
+const MultiTrackPlayer: React.FC<MultiTrackPlayerProps> = ({ tracks, onRemoveTrack, autoplay = false, masterVolume = 1 }) => {
   const removeTrack = useCallback((trackId: string) => {
     onRemoveTrack?.(trackId);
   }, [onRemoveTrack]);
@@ -64,6 +65,7 @@ const MultiTrackPlayer: React.FC<MultiTrackPlayerProps> = ({ tracks, onRemoveTra
             height={trackHeight}
             isCompact={isCompact}
             autoplay={autoplay}
+            masterVolume={masterVolume}
           />
         ))}
       </div>

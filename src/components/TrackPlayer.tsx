@@ -9,6 +9,7 @@ import { useWavesurferRegions } from '@/hooks/useWavesurferRegions';
 import { useWavesurferEvents } from '@/hooks/useWavesurferEvents';
 import { usePlayPauseHandler } from '@/hooks/usePlayPauseHandler';
 import { useAudioAnalysis } from '@/contexts/AudioAnalysisContext';
+import VerticalSlider from './VerticalSlider';
 
 interface TrackPlayerProps {
   track: AudioTrack;
@@ -16,14 +17,16 @@ interface TrackPlayerProps {
   height?: number;
   isCompact?: boolean;
   autoplay?: boolean;
+  masterVolume?: number;
 }
 
-const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({ 
-  track, 
-  onRemove, 
+const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
+  track,
+  onRemove,
   height = 80,
   isCompact = false,
-  autoplay = false
+  autoplay = false,
+  masterVolume = 1
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [regionsEnabled, setRegionsEnabled] = useState(false);
@@ -32,6 +35,7 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
   const [preservePitch, setPreservePitch] = useState(false);
   const [showSpeedOptions, setShowSpeedOptions] = useState(false);
   const [loopMode, setLoopMode] = useState(false); // New: Smart loop mode
+  const [trackVolume, setTrackVolume] = useState(1);
   const hasUserInteractedRef = useRef(false);
   
   const { registerWavesurfer, unregisterWavesurfer, updatePlayingState } = useAudioAnalysis();
@@ -63,6 +67,13 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
       updatePlayingState(track.id, isPlaying);
     }
   }, [isPlaying, track.id, wavesurfer, isReady, updatePlayingState]);
+
+  // Master volume scales every track; the per-track fader trims within it.
+  useEffect(() => {
+    if (wavesurfer && isReady) {
+      wavesurfer.setVolume(Math.max(0, Math.min(1, masterVolume * trackVolume)));
+    }
+  }, [wavesurfer, isReady, masterVolume, trackVolume]);
 
   // Update pitch preservation when it changes
   useEffect(() => {
@@ -209,6 +220,7 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
           <button
             onClick={() => onRemove(track.id)}
             className="text-gray-400 hover:text-red-400 p-1"
+            aria-label={`Remove ${track.name}`}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -217,7 +229,7 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
         )}
       </div>
 
-      {/* Controls and Waveform - 3 Column Layout */}
+      {/* Controls and Waveform - 4 Column Layout */}
       <div className="flex items-center gap-3">
         {/* Column 1: Play Button - Height of 2 buttons combined */}
         <button
@@ -345,6 +357,28 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
                 </button>
               ))}
             </div>
+          )}
+        </div>
+
+        {/* Column 4: per-track volume, trimmed on top of the master.
+            Height matches the play button and the button stacks either side. */}
+        <div className="flex flex-col items-center gap-1 flex-shrink-0">
+          <div
+            className={`bg-gray-950 border border-gray-700 p-1 relative ${isCompact ? 'w-5 h-14' : 'w-6 h-18'}`}
+            title={`Volume ${Math.round(trackVolume * 100)}%`}
+          >
+            <VerticalSlider
+              value={trackVolume}
+              onChange={setTrackVolume}
+              className="absolute inset-1"
+              handleClassName={isCompact ? 'w-3 h-1.5' : 'w-4 h-2'}
+              ariaLabel={`Volume for ${track.name}`}
+            />
+          </div>
+          {!isCompact && (
+            <span className="text-[9px] font-mono text-gray-500 tabular-nums leading-none">
+              {Math.round(trackVolume * 100)}
+            </span>
           )}
         </div>
 

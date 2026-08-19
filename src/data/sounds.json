@@ -168,6 +168,22 @@
     "imageSrc": "/images/macklemore-3rd-grade.jpg"
   },
   {
+    "id": "opasna-muzika",
+    "name": "opasna muzika",
+    "artist": "",
+    "url": "/sounds/vocals/opasna_muzika.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/opasna_muzika.jpg"
+  },
+  {
+    "id": "peder",
+    "name": "peder",
+    "artist": "",
+    "url": "/sounds/vocals/peder.mp3",
+    "category": "vocals",
+    "imageSrc": "/images/peder.jpg"
+  },
+  {
     "id": "samuel",
     "name": "Ezekiel 25:17",
     "artist": "Pulp Fiction",
@@ -654,6 +670,22 @@
     "url": "/sounds/brainfarts/you_need_to_leave.mp3",
     "category": "brainfarts",
     "imageSrc": "/images/you-need-to-leave.jpg"
+  },
+  {
+    "id": "isaac-hayes-hung-up-on-my-baby",
+    "name": "Hung Up On My Baby",
+    "artist": "Isaac Hayes",
+    "url": "/sounds/loops/isaac_hayes_hung_up_on_my_baby.mp3",
+    "category": "loops",
+    "imageSrc": "/images/isaac_hayes.jpg"
+  },
+  {
+    "id": "richard-clapton-longshore-rider",
+    "name": "Longshore Rider",
+    "artist": "Richard Clapton",
+    "url": "/sounds/loops/richard_clapton_longshore_rider.mp3",
+    "category": "loops",
+    "imageSrc": "/images/richard_clapton.jpg"
   },
   {
     "id": "space-invaders",
