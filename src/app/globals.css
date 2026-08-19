@@ -81,3 +81,19 @@ body {
   transform: scale(1.1);
   box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
 }
+
+/*
+ * Region drag-selection is pointer-event based and ignores movement for the
+ * first 100ms on coarse pointers. Without touch-action: none the browser wins
+ * that race, treats the swipe as a pan, fires pointercancel, and the gesture
+ * degrades into a plain seek. Applied to the wavesurfer shadow parts as well as
+ * the host, since .scroll is its own scroll container.
+ */
+.waveform-select {
+  touch-action: none;
+}
+
+.waveform-select > div::part(scroll),
+.waveform-select > div::part(wrapper) {
+  touch-action: none;
+}

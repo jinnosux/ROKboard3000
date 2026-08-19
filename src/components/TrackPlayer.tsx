@@ -81,33 +81,34 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
     }
   }, [wavesurfer, isReady, autoplay, isPlaying]);
 
-  const { currentRegion, isLooping, startLoop, stopLoop } = useWavesurferRegions(
-    wavesurfer, 
-    isReady, 
-    regionsEnabled, 
-    () => {
-      setLoopEnabled(false);
-      setLoopMode(false); // Reset loop mode when regions are cleared
-    }
+  // Must be stable: useWavesurferRegions re-registers drag selection whenever
+  // this identity changes, which would tear down an in-progress selection.
+  const handleRegionsCleared = useCallback(() => {
+    setLoopEnabled(false);
+    setLoopMode(false); // Reset loop mode when regions are cleared
+  }, []);
+
+  const { currentRegion } = useWavesurferRegions(
+    wavesurfer,
+    isReady,
+    regionsEnabled,
+    loopEnabled,
+    handleRegionsCleared
   );
-  
-  useWavesurferEvents(wavesurfer, isReady, regionsEnabled);
+
+  useWavesurferEvents(wavesurfer, isReady);
 
   const playRegion = useCallback(() => {
-    if (loopEnabled) {
-      if (currentRegion && !isLooping) {
-        // Region-based looping
-        startLoop(currentRegion);
-      } else if (!currentRegion && wavesurfer) {
-        // Full track looping - enable wavesurfer's built-in loop
-        const audioElement = wavesurfer.getMediaElement();
-        if (audioElement) {
-          audioElement.loop = true;
-        }
+    // Region looping is driven by the plugin's region-out event; only the
+    // full-track case needs the media element's own loop flag.
+    if (loopEnabled && !currentRegion && wavesurfer) {
+      const audioElement = wavesurfer.getMediaElement();
+      if (audioElement) {
+        audioElement.loop = true;
       }
     }
-    createRegionPlayback(currentRegion, loopEnabled, wavesurfer);
-  }, [loopEnabled, currentRegion, isLooping, startLoop, wavesurfer]);
+    createRegionPlayback(currentRegion, wavesurfer);
+  }, [loopEnabled, currentRegion, wavesurfer]);
 
   // Effect to handle loop state changes
   useEffect(() => {
@@ -143,12 +144,9 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
         const isWithinRegion = currentTime >= currentRegion.start && currentTime <= currentRegion.end;
         
         if (isWithinRegion) {
-          // We're within the region, just resume normal playback
-          wavesurfer?.play();
-          // If loop mode was enabled, re-enable the loop monitoring
-          if (loopEnabled && !isLooping) {
-            startLoop(currentRegion);
-          }
+          // Resume from here but keep the region's end bound armed, so looping
+          // still kicks in when playback reaches it.
+          wavesurfer?.play(undefined, currentRegion.end);
         } else {
           // We're outside the region, start from the beginning
           playRegion();
@@ -157,7 +155,7 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
     } else {
       originalHandlePlayPause();
     }
-  }, [markUserInteraction, currentRegion, regionsEnabled, isPlaying, wavesurfer, loopEnabled, isLooping, startLoop, playRegion, originalHandlePlayPause]);
+  }, [markUserInteraction, currentRegion, regionsEnabled, isPlaying, wavesurfer, playRegion, originalHandlePlayPause]);
 
   // Handle spacebar for this specific track when it has focus or regions
   useEffect(() => {
@@ -253,9 +251,6 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
               if (!newRegionsEnabled && loopMode) {
                 setLoopMode(false);
                 setLoopEnabled(false);
-                if (isLooping) {
-                  stopLoop();
-                }
               }
             }}
             disabled={!isReady}
@@ -289,14 +284,11 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
                 // Disable loop mode: turn off looping and CUT
                 setLoopEnabled(false);
                 setRegionsEnabled(false);
-                if (isLooping) {
-                  stopLoop();
-                }
               }
             }}
             disabled={!isReady}
             className={`border border-gray-600 rounded-sm shadow-inner transition-all duration-300 ${
-              loopMode || (loopEnabled && currentRegion)
+              loopMode || loopEnabled
                 ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-500/25'
                 : 'bg-black text-gray-400 hover:bg-gray-800'
             } ${controlButtonSize}`}
@@ -358,7 +350,12 @@ const TrackPlayer: React.FC<TrackPlayerProps> = React.memo(({
 
         {/* Waveform */}
         <div className="flex-1">
-          <div ref={containerRef} className="w-full" />
+          {/* While regions are on, the drag gesture must win over the browser's
+              touch panning or mobile never gets past a plain seek. */}
+          <div
+            ref={containerRef}
+            className={`w-full ${regionsEnabled ? 'waveform-select' : ''}`}
+          />
         </div>
       </div>
 

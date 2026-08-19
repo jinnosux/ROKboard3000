@@ -6,32 +6,22 @@ import type { WaveSurferType } from '@/types/audio';
 export const useWavesurferEvents = (
   wavesurfer: WaveSurferType | null,
   isReady: boolean,
-  regionsEnabled: boolean,
   onPlay?: () => void,
   onPause?: () => void
 ) => {
   useEffect(() => {
     if (wavesurfer && isReady) {
-      const handleInteraction = (relativeX: number) => {
-        if (!regionsEnabled) {
-          const duration = wavesurfer.getDuration();
-          const seekTime = relativeX * duration;
-          wavesurfer.setTime(seekTime);
-        }
-      };
-
+      // Seeking on click is handled natively by the core when interact is on.
       const handlePlay = () => onPlay?.();
       const handlePause = () => onPause?.();
 
-      wavesurfer.on('click', handleInteraction);
       if (onPlay) wavesurfer.on('play', handlePlay);
       if (onPause) wavesurfer.on('pause', handlePause);
 
       return () => {
-        wavesurfer.un('click', handleInteraction);
         if (onPlay) wavesurfer.un('play', handlePlay);
         if (onPause) wavesurfer.un('pause', handlePause);
       };
     }
-  }, [wavesurfer, isReady, regionsEnabled, onPlay, onPause]);
+  }, [wavesurfer, isReady, onPlay, onPause]);
 };

@@ -32,14 +32,6 @@
     "category": "Effect"
   },
   {
-    "id": "motorcycle",
-    "name": "Motorcycle Take Off",
-    "artist": "Various",
-    "url": "/sounds/motorcycle.mp3",
-    "imageSrc": "/images/moto.jpg",
-    "category": "Effect"
-  },
-  {
     "id": "samuel",
     "name": "Ezekiel 25:17",
     "artist": "Pulp Fiction",
